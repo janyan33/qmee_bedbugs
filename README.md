@@ -7,4 +7,4 @@ The data is located in the **"data"** folder within this repository. The **bbsna
 
 Within the data folder, there is another folder for interaction matrices named **"matrices"**. Each replicate has a corresponding mating and mounting matrix that was created manually by tallying interactions that occured between individuals in our raw observation file.* Lastly, we've also included a folder within "data" named **"raw"** for the raw observation spreadsheets so that collaborators can get a better sense of how data was collected and converted into matrices. 
 
-*I'm (Janice) hoping to write an Rscript that will automate the process of extracting interactions from the observation file to create the mating and mounting matrices but haven't found the spare time to do this yet
+*I'm (JY) hoping to write an Rscript that will automate the process of extracting interactions from the observation file to create the mating and mounting matrices but haven't found the spare time to do this yet
