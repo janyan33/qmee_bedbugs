@@ -3,7 +3,7 @@
 
 Predictions:
 1.	Females will be more social than males 
-    This effect will be stronger in the low sexual conflict treatment (12 shelters) compared to the high sexual conflict treatment (2 shelters)
+This effect will be stronger in the low sexual conflict treatment (12 shelters) compared to the high sexual conflict treatment (2 shelters)
 2.	Networks will have assortativity based on sex
     This effect will be stronger in the low sexual conflict treatment (12 shelters) compared to the high sexual conflict treatment (2 shelters)
 3.	The among of harassment females receive will increase as a function of female sociality 
