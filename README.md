@@ -3,11 +3,9 @@
 
 Predictions:
 1.	Females will be more social than males 
-/n This effect will be stronger in the low sexual conflict treatment (12 shelters) compared to the high sexual conflict treatment (2 shelters)
 2.	Networks will have assortativity based on sex
-    This effect will be stronger in the low sexual conflict treatment (12 shelters) compared to the high sexual conflict treatment (2 shelters)
-3.	The among of harassment females receive will increase as a function of female sociality 
-
+3.	The among of harassment females receive will increase as a function of female sociality
+4. The effects described in predictions 1 and 2 will be stronger in the low sexual conflict treatment (12 shelters) compared to the high sexual conflict treatment (2 shelters)
 
 ## Data
 The data is located in the **"data"** folder within this repository. The **bbsna_attributes** file contains all the key attributes (sex, size, etc.) and information (replicate, treatment etc.) about each individual bedbug from our experiments. The **bbsna_aggregations** file contains lists of group members in each aggregation along with when these aggregations were observed. This is used to create association matrices for each replicate using the asnipe R package. 
