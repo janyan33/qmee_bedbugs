@@ -8,7 +8,7 @@ Predictions:
 2.	Networks will have assortativity based on sex (**BMB**: clarify: males will segregate from females? or the opposite)
 3.	The amount of harassment females receive will increase as a function of female sociality (**BMB**: is female sociality = assortativity?)
 4.  The effects described in predictions 1 and 2 will be stronger in the low sexual conflict treatment (12 shelters) compared to the high sexual conflict treatment (2 shelters) as more shelters should provide females more opportunity to use behavioural avoidance strategies 
-JD: Typo in #3. What's the theory beyond 3? Who is harassing the females?
+JD: What's the theory beyond 3? Who is harassing the females?
 
 **BMB**: as you probably already know, the hard part of this is probably going to be all the questions for which the sampling unit is the entire network - if you don't have very many networks, you will only be able to see strong effects clearly ... do you think you might be able to start with a power analysis? Low-powered studies have a lot of pitfalls ... are there interesting questions you can ask the individual or the dyad level ?
 
