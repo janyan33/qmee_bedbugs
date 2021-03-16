@@ -5,8 +5,14 @@ JD: A little bit about the study system first?
 
 Predictions:
 1.	Females will be more social than males (**BMB**: how is sociality measured/quantified?)
+**JY:** Currently, I've been quantifying sociality by converting my list of aggregations to an association network using the get_network function. I then calculate strength (weighted degree) for each individual as a measure of sociality. 
+
 2.	Networks will have assortativity based on sex (**BMB**: clarify: males will segregate from females? or the opposite)
+**JY**: Females will segregate from males as a way of avoiding harassment while still reaping the gains of aggregating. 
+
 3.	The amount of harassment females receive will increase as a function of female sociality (**BMB**: is female sociality = assortativity?)
+**JY**: Female sociality = strength
+
 4.  The effects described in predictions 1 and 2 will be stronger in the low sexual conflict treatment (12 shelters) compared to the high sexual conflict treatment (2 shelters) as more shelters should provide females more opportunity to use behavioural avoidance strategies 
 JD: What's the theory beyond 3? Who is harassing the females?
 
