@@ -1,9 +1,7 @@
 # QMEE final project
 
 ## Background
-Bedbugs _(Cimex lectularius)_ are an ideal model for studying the social implications of sexual conflict because of their notably harmful mode of copulation – traumatic insemination. Repeated traumatic inseminations reduce female longevity and lifetime reproductive output due to the energetic costs of wound healing and increased likelihood of infection. As a result, we expect the high fitness costs associated with repeated traumatic matings to result in divergent social preferences between the sexes. To investigate the impact of sexual harassment (quantified by # of matings and mountings) on social structure, we devised a novel experimental arena that provides bedbug populations with high-quality shelters as well as an artificial “host” to facilitate natural foraging behaviour. By manipulating the number of shelters, we've created two treatments, one where bedbugs are provided with two shelters 
-
-Using a combination of video-recordings and live observation, we are tracking sexual and social interactions between individually marked bedbugs over six consecutive  days at a time. With this data, we can use social network analysis to analyze and visualize bedbug social structure and assess various predictions about how the presence of intense sexual conflict influences animal sociality. 
+Bedbugs _(Cimex lectularius)_ are an ideal model for studying the social implications of sexual conflict because of their notably harmful mode of copulation – traumatic insemination. Repeated traumatic inseminations reduce female longevity and lifetime reproductive output due to the energetic costs of wound healing and increased likelihood of infection. As a result, we expect the high fitness costs associated with repeated traumatic matings to result in divergent social preferences between the sexes. To investigate the impact of sexual harassment (quantified by # of matings and mountings) on social structure, we devised a novel experimental arena that provides bedbug populations with high-quality shelters as well as an artificial “host” to facilitate natural foraging behaviour. By manipulating the number of shelters, we've created two treatments: **low sexual conflict** where populations get 12 shelters to move between and **high sexual confict** where populations are contrained to 2 shelters. This allows us to compare networks for when females have the opportunity to evade males vs. when opportunities for behavioural avoidance are limited. Using a combination of video-recordings and live observation, we are tracking sexual and social interactions between individually marked bedbugs over six consecutive  days at a time. With this data, we can use social network analysis to analyze and visualize bedbug social structure and assess various predictions about how the presence of intense sexual conflict influences animal sociality. 
 
 ## Predictions
 
@@ -16,7 +14,7 @@ Describe how this will be measured here
 ### 3.	The amount of harassment females receive will increase as a function of female sociality 
 Describe how this will be measured here
 
-### 4.  The effects described in predictions 1 and 2 will be stronger in the low sexual conflict treatment (12 shelters) compared to the high sexual conflict treatment (2 shelters) as more shelters should provide females more opportunity to use behavioural avoidance strategies **
+### 4.  The effects described in predictions 1 and 2 will be stronger in the low sexual conflict treatment (12 shelters) compared to the high sexual conflict treatment (2 shelters) as more shelters should provide females more opportunity to use behavioural avoidance strategies
 Describe how this will be measured here
 
 ## Data
@@ -27,4 +25,4 @@ Within the data folder, there is another folder for interaction matrices named `
 
 *I'm (JY) hoping to write an Rscript that will automate the process of extracting interactions from the observation file to create the mating and mounting matrices but haven't found the spare time to do this yet
 JD: THis could be a good thing to do on Thursday I hope.
-JY: Started doing this; got some feedback from JD on Thursday 
+JY: Started doing this (data_cleaning.R); got some feedback from JD on Thursday for how to best finish this
