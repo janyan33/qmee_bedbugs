@@ -6,14 +6,16 @@ Bedbugs _(Cimex lectularius)_ are an ideal model for studying the social implica
 ## Predictions
 
 ### 1.	Females will be more social than males
-TESTING something here
+Describe how this will be measured here
 
-2.	Networks will have assortativity based on sex 
+### 2.	Networks will have assortativity based on sex 
+Describe how this will be measured here
 
-3.	The amount of harassment females receive will increase as a function of female sociality 
+### 3.	The amount of harassment females receive will increase as a function of female sociality 
+Describe how this will be measured here
 
-4.  The effects described in predictions 1 and 2 will be stronger in the low sexual conflict treatment (12 shelters) compared to the high sexual conflict treatment (2 shelters) as more shelters should provide females more opportunity to use behavioural avoidance strategies **
-
+### 4.  The effects described in predictions 1 and 2 will be stronger in the low sexual conflict treatment (12 shelters) compared to the high sexual conflict treatment (2 shelters) as more shelters should provide females more opportunity to use behavioural avoidance strategies **
+Describe how this will be measured here
 
 ## Data
 
@@ -23,3 +25,4 @@ Within the data folder, there is another folder for interaction matrices named `
 
 *I'm (JY) hoping to write an Rscript that will automate the process of extracting interactions from the observation file to create the mating and mounting matrices but haven't found the spare time to do this yet
 JD: THis could be a good thing to do on Thursday I hope.
+JY: Started doing this; got some feedback from JD on Thursday 
