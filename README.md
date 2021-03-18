@@ -1,7 +1,9 @@
 # QMEE final project
-## Our plan
 
-JD: A little bit about the study system first?
+## Background
+Bedbugs _(Cimex lectularius)_ are an ideal model for studying the social implications of sexual conflict because of their notably harmful mode of copulation – traumatic insemination. Repeated traumatic inseminations reduce female longevity and lifetime reproductive output due to the energetic costs of wound healing and increased likelihood of infection. As a result, we expect the high fitness costs associated with repeated traumatic matings to result in divergent social preferences between the sexes. To investigate the impact of sexual harassment on social structure, we devised a novel experimental arena that provides bedbug populations with several high-quality shelters as well as an artificial “host” to facilitate natural foraging behaviour. Using a combination of video-recordings and live observation, we will track sexual and social interactions between individually marked bedbugs over several days. With this data, we can use social network analysis to analyze and visualize bedbug social structure and assess various predictions about how the presence of intense sexual conflict influences animal sociality. 
+
+## Our plan
 
 Predictions:
 1.	Females will be more social than males (**BMB**: how is sociality measured/quantified?)
