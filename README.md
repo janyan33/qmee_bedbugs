@@ -3,22 +3,17 @@
 ## Background
 Bedbugs _(Cimex lectularius)_ are an ideal model for studying the social implications of sexual conflict because of their notably harmful mode of copulation – traumatic insemination. Repeated traumatic inseminations reduce female longevity and lifetime reproductive output due to the energetic costs of wound healing and increased likelihood of infection. As a result, we expect the high fitness costs associated with repeated traumatic matings to result in divergent social preferences between the sexes. To investigate the impact of sexual harassment on social structure, we devised a novel experimental arena that provides bedbug populations with several high-quality shelters as well as an artificial “host” to facilitate natural foraging behaviour. Using a combination of video-recordings and live observation, we will track sexual and social interactions between individually marked bedbugs over several days. With this data, we can use social network analysis to analyze and visualize bedbug social structure and assess various predictions about how the presence of intense sexual conflict influences animal sociality. 
 
-## Our plan
+## Predictions
 
-Predictions:
-1.	Females will be more social than males (**BMB**: how is sociality measured/quantified?)
-**JY:** Currently, I've been quantifying sociality by converting my list of aggregations to an association network using the get_network function. I then calculate strength (weighted degree) for each individual as a measure of sociality. 
+**1.	Females will be more social than males **
+TESTING
 
-2.	Networks will have assortativity based on sex (**BMB**: clarify: males will segregate from females? or the opposite)
-**JY**: Females will segregate from males as a way of avoiding harassment while still reaping the gains of aggregating. 
+**2.	Networks will have assortativity based on sex 
 
-3.	The amount of harassment females receive will increase as a function of female sociality (**BMB**: is female sociality = assortativity?)
-**JY**: Female sociality = strength
+3.	The amount of harassment females receive will increase as a function of female sociality 
 
-4.  The effects described in predictions 1 and 2 will be stronger in the low sexual conflict treatment (12 shelters) compared to the high sexual conflict treatment (2 shelters) as more shelters should provide females more opportunity to use behavioural avoidance strategies 
-JD: What's the theory beyond 3? Who is harassing the females?
+4.  The effects described in predictions 1 and 2 will be stronger in the low sexual conflict treatment (12 shelters) compared to the high sexual conflict treatment (2 shelters) as more shelters should provide females more opportunity to use behavioural avoidance strategies **
 
-**BMB**: as you probably already know, the hard part of this is probably going to be all the questions for which the sampling unit is the entire network - if you don't have very many networks, you will only be able to see strong effects clearly ... do you think you might be able to start with a power analysis? Low-powered studies have a lot of pitfalls ... are there interesting questions you can ask the individual or the dyad level ?
 
 ## Data
 
