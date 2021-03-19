@@ -13,7 +13,7 @@ Statistics: TBD
 
 ### 2.	Networks will show preferential assortment between same-sex individuals; networks will have higher assortativity indexes (based on sex) than expected by chance. 
 Describe how this will be measured here
-Statistics: GML
+Statistics: Permutations
 
 ### 3.	The amount of harassment females receive will increase as a function of female sociality 
 Describe how this will be measured here
