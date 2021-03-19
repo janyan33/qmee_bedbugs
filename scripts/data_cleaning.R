@@ -26,16 +26,23 @@ all_data <- all_data %>%
             left_join(id_key_focal, by = "focal_individual") %>% 
             left_join(id_key_partner, by = "social_partner")
 
-## Getting edgelists from my combined dataset
-mount_1_edgelist <- all_data %>% 
-                    filter(replicate == 1) %>% 
-                    filter(behaviour == "mount") %>% 
-                    select(c(focal_ID, partner_ID)) %>% 
-                    mutate(edge_weight = 1)
-mount_1_edgelist <- aggregate(data = mount_1_edgelist, edge_weight ~ focal_ID + partner_ID, FUN = sum)
+## Creating a function that turns data into edgelists and then into interaction matrices
+func_mount_mat <- function(all_data) {
+                  all_data <- all_data %>% 
+                              filter(behaviour == "mount") %>% 
+                              select(c(focal_ID, partner_ID)) %>% 
+                              mutate(edge_weight = 1)
+                  mount_edgelist <- aggregate(data = all_data, edge_weight ~ focal_ID + partner_ID, FUN = sum)
+                  mount_matrix <- edgelist_to_adjmat(mount_edgelist[1:2], w = mount_edgelist$edge_weight, 
+                                                     undirected = FALSE)
+return(as.matrix(mount_matrix))
+}
 
-mount_mat_1 <- as.matrix(edgelist_to_adjmat(mount_1_edgelist[1:2], 
-                                  w = mount_1_edgelist$edge_weight, undirected = FALSE))
+## Applying function to all replicates and storing matrices as a list object
+rep_list <- split(all_data, all_data$replicate)
+mount_matrices <- lapply(rep_list, func_mount_mat)
+
+
 
 
 
