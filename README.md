@@ -6,9 +6,12 @@ Bedbugs _(Cimex lectularius)_ are an ideal model for studying the social implica
 ## Predictions
 
 ### 1.	Females will be more social than males
-Describe how this will be measured here
+To quantify sociability, we'll construct weighted undirected networks where each edge represents an association index calculated based on how often two bedbugs were seen in the same aggregation. Specifically, we use the Simple Ratio Index (SRI) method of inferring associations (CITATION). Aggregations are defined as a continous group of bedbugs where each individual is physically touching at least one other individual in the aggregation. Using these association networks, we can then calculate several centrality measure that quantify sociability. However, we decided a priori to use **strength** as our measure of sociability which quantifies the number of and weight of each individual's edges (or associations) because this seems biologically intuitive and reasonable. By calculating strength for each individual, we should be able to compare the sociability of males vs. females across replicates. 
 
-### 2.	Networks will have assortativity based on sex 
+**JY's questions:** We'd use some kind of linear model right? A mixed model to control for things like replicate, bedbug size, and other potentially important things I'm not thinking of? Also, I think we may have a problem with non-independence seeing as individual strength relies on interactions with other individuals? How do we address this? 
+
+
+### 2.	Networks will show preferential assortment between same-sex individuals; networks will have higher assortativity indexes (based on sex) than expected by chance. 
 Describe how this will be measured here
 
 ### 3.	The amount of harassment females receive will increase as a function of female sociality 
