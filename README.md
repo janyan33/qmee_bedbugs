@@ -6,7 +6,6 @@ Bedbugs _(Cimex lectularius)_ are an ideal model for studying the social implica
 ## Predictions
 
 ### 1.	Females will be more social than males
-Describe how this will be measured here
 
 ### 2.	Networks will have assortativity based on sex 
 Describe how this will be measured here
