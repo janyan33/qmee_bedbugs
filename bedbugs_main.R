@@ -26,7 +26,11 @@ func_igraph <- function(rep_groups){
 }
 
 ## Using func_igraph on the list of replicates
+<<<<<<< HEAD
 igraph_objects <- lapply(rep_list_groups, func_igraph)
+=======
+igraph_objects <- lapply(rep_list, func_igraph)
+>>>>>>> ebdcf92e77d857d1aca1e035e2ad8fcc113c33fb
 
 ## Plotting one of the replicates, not very detailed(missing attributes); don't have time to code this rn
 plot(igraph_objects[[1]], edge.curved = 0, edge.color = "black", weighted = TRUE,
@@ -34,6 +38,7 @@ plot(igraph_objects[[1]], edge.curved = 0, edge.color = "black", weighted = TRUE
 
 ## Visualizing strength of males vs. females and the two treatments
 ggplot(data = attr, aes(y = prox_strength, x = treatment, fill = sex)) + geom_boxplot() 
+<<<<<<< HEAD
 
 ## Prediction 1 
 lm.social <- lm(prox_strength~sex, data=attr)
@@ -43,3 +48,5 @@ plot(lm.social)
 lm.harass <- lm(matings~prox_strength, data=attr)
 plot(lm.harass)
 
+=======
+>>>>>>> ebdcf92e77d857d1aca1e035e2ad8fcc113c33fb
