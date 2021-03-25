@@ -44,3 +44,4 @@ lm.harass <- lm(matings~prox_strength, data=attr)
 plot(lm.harass)
 
 
+
