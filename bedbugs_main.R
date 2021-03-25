@@ -38,7 +38,6 @@ plot(igraph_objects[[1]], edge.curved = 0, edge.color = "black", weighted = TRUE
 
 ## Visualizing strength of males vs. females and the two treatments
 ggplot(data = attr, aes(y = prox_strength, x = treatment, fill = sex)) + geom_boxplot() 
-<<<<<<< HEAD
 
 ## Prediction 1 
 lm.social <- lm(prox_strength~sex, data=attr)
@@ -48,5 +47,4 @@ plot(lm.social)
 lm.harass <- lm(matings~prox_strength, data=attr)
 plot(lm.harass)
 
-=======
->>>>>>> ebdcf92e77d857d1aca1e035e2ad8fcc113c33fb
+
