@@ -30,10 +30,10 @@ The data is located in the `data` folder within this repository. The `bbsna_attr
 
 Within the data folder, there is another folder for interaction matrices named `matrices`. Each replicate has a corresponding mating and mounting matrix that was created manually by tallying interactions that occured between individuals in our raw observation file.* Lastly, we've also included a folder within `data` named `raw` for the raw observation spreadsheets so that collaborators can get a better sense of how data was collected and converted into matrices.
 
-We've added a "bbsna_raw_combined.csv" file into the data folder which compiles the raw data across all days for all replicates and intend to use this file to obtain the mounting and mating matrices using the data_cleaning.R script that we're currently working on. 
+We've added a "bbsna_raw_combined.csv" file into the data folder which compiles the raw data across all days for all replicates and intend to use this file to obtain the mounting and mating matrices using the scripts/data_cleaning.R script that we're currently working on. 
 
 *I'm (JY) hoping to write an Rscript that will automate the process of extracting interactions from the observation file to create the mating and mounting matrices but haven't found the spare time to do this yet
 
 JD: THis could be a good thing to do on Thursday I hope.
 
-JY: Started doing this (data_cleaning.R); got some feedback from JD on Thursday for how to best finish this
+JY: Started doing this (scripts/data_cleaning.R); got some feedback from JD on Thursday for how to best finish this
