@@ -3,3 +3,4 @@
 .RData
 .Ruserdata
 bedbugs_tests.R
+.DS_Store
