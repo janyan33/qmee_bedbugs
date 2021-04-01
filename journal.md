@@ -4,3 +4,8 @@ March 26: For predictions 1 and 3, we considered a general linear model. But we 
 
 March 30: For prediction 2, we will use a permutation analysis. Janice created a new script for all the functions to keep the main script cleaner (e.g, igraph functions). She started the strength permutation in order to have the observed coef for the effect of strength ~ sex. Then randomizing the networks 1000 times to get 1000 new coefs for strength ~ sex under the null hypothesis, but the randomizing isn't working, so we will be figuring this out shortly
 
+April 1: Figuring out the Prediction 1 GLMM (females will be more social than males)
+Slope vs intercept model?
+prox_stregth ~ sex
+Fixed effects: 
+Random effects: 
