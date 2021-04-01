@@ -27,9 +27,9 @@ all_data <- all_data %>%
             left_join(id_key_partner, by = "social_partner")
 
 ## Creating a function that turns data into edgelists and then into interaction matrices
-func_mount_mat <- function(all_data) {
+func_mount_mat <- function(all_data, behav) {
                   all_data <- all_data %>% 
-                              filter(behaviour == "mount") %>% 
+                              filter(behaviour == behav) %>% 
                               select(c(focal_ID, partner_ID)) %>% 
                               mutate(edge_weight = 1)
                   mount_edgelist <- aggregate(data = all_data, edge_weight ~ focal_ID + partner_ID, FUN = sum)
@@ -40,8 +40,11 @@ return(as.matrix(mount_matrix))
 
 ## Applying function to all replicates and storing matrices as a list object
 rep_list <- split(all_data, all_data$replicate)
-mount_matrices <- lapply(rep_list, func_mount_mat)
+mount_matrices <- lapply(rep_list, func_mount_mat, "mount") # Creates list of mounting matrices
+mating_matrices <- lapply(rep_list, func_mount_mat, "mating") # Creates list of mating matrices
 
+saveRDS(mount_matrices, "mount_matrices.rds")
+saveRDS(mating_matrices, "mating_matrices.rds")
 
 
 
