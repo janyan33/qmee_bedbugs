@@ -19,10 +19,8 @@ attr_list <- split(attr, attr$replicate)
 
 ## Using func_igraph on the list of replicates
 igraph_objects <- lapply(rep_list_groups, func_igraph)
-<<<<<<< HEAD
+
 igraph_objects <- lapply(rep_list, func_igraph)
-=======
->>>>>>> 5d911d0884ea3be79cd43b20222580d3fe0df9c6
 
 ## Plotting one of the replicates, not very detailed(missing attributes); don't have time to code this rn
 plot(igraph_objects[[1]], edge.curved = 0, edge.color = "black", weighted = TRUE,
