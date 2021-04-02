@@ -1,7 +1,6 @@
 ## R-script for all functions created
 
 ## FUNCTION 1: Turns raw data from bbsna_aggregations into igraph objects (one per replicate)
-#JY: I tried very hard to avoid listing all the letters using stuff like LETTERS[A:L] but couldn't get it to work :(
 func_igraph <- function(rep_groups){
   group_list <- strsplit(rep_groups$Members, " ")
   gbi_matrix <- get_group_by_individual(group_list, data_format = "groups")
@@ -9,12 +8,9 @@ func_igraph <- function(rep_groups){
   ibi_matrix <- ibi_matrix[order(rownames(ibi_matrix)) , order(colnames(ibi_matrix))] # alphabetical order
   igraph <- graph_from_adjacency_matrix(ibi_matrix, diag = FALSE, weighted = TRUE, mode = "undirected")
   igraph <- set_vertex_attr(igraph, "sex", 
-                            value = ifelse(V(igraph)$name == c("A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L"), "Male", "Female"))
+                            value = ifelse(V(igraph)$name %in% LETTERS[1:12], "Male", "Female"))
   strength <- strength(igraph)
-  #igraph <- set_vertex_attr(igraph, "strength", value = strength)
-  V(igraph)$color <- ifelse(V(igraph)$sex == "Female", "red", "blue")
-  V(igraph)$label.color <- "white"
-  E(igraph)$width <- E(igraph)$weight
+  igraph <- set_vertex_attr(igraph, "strength", value = strength)
   return(igraph)
 }
 
@@ -36,17 +32,30 @@ func_attr <- function(igraph_objects){
 ## FUNCTION 3: Visualizing the social networks (this is useful for detecting errors in other parts of the code)
 # Input: An igraph object
 # Output: The SNA graph where size = strength*10
-
 func_plot_network <- function(igraph_object){
-  #V(igraph_object)$size <- V(igraph_object)$strength*10
+  V(igraph_object)$color <- ifelse(V(igraph_object)$sex == "Female", "red", "blue")
+  V(igraph_object)$size <- V(igraph_object)$strength*10
+  V(igraph_object)$label.color <- "white"
+  E(igraph_object)$width <- E(igraph_object)$weight
   plot(igraph_object, edge.color = "dimgrey")
 }
 
-
-
-
-
-
-
-
+## FUNCTION 4: Permute node labels
+func_permute_igraph <- function(rep_list_group) { 
+  group_list <- strsplit(rep_list_group$Members, " ")
+  gbi_matrix <- get_group_by_individual(group_list, data_format = "groups")
+  ibi_matrix <- get_network(gbi_matrix, data_format = "GBI")
+  
+  
+ new_names <- sample(colnames(ibi_matrix))
+colnames(ibi_matrix) <- new_names
+  rownames(ibi_matrix) <- new_names
+ 
+  igraph <- graph_from_adjacency_matrix(ibi_matrix, diag = FALSE, weighted = TRUE, mode = "undirected")
+  igraph <- set_vertex_attr(igraph, "sex", 
+                            value = ifelse(V(igraph)$name %in% LETTERS[1:12], "Male", "Female"))
+  strength <- strength(igraph)
+  igraph <- set_vertex_attr(igraph, "strength", value = strength)
+  return(igraph)
+}  
 
