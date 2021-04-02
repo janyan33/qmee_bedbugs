@@ -22,10 +22,7 @@ attr <- read.csv("data/bbsna_attributes.csv") %>%
 igraph_objects <- lapply(rep_list_groups, func_igraph)
 
 ## Need to assign a few more attributes to the nodes (size, treatment)
-new_attr <- func_attr(igraph_objects)
-
-## Now I need to permute the igraph objects
-test <- permute(igraph_objects[[1]], permutation = sample(vcount((igraph_objects[[1]]))))
+func_attr(igraph_objects)
 
 
 
@@ -36,8 +33,8 @@ test <- permute(igraph_objects[[1]], permutation = sample(vcount((igraph_objects
 
 
 
-
-
+## Plotting networks
+lapply(X = igraph_objects, FUN = func_plot_network)
 
 
 
