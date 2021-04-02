@@ -13,8 +13,9 @@ groups <- read.csv("data/bbsna_aggregations.csv") %>%
 
 ## Attribute data
 attr <- read.csv("data/bbsna_attributes.csv") %>% 
-        filter(replicate == 1:2) %>% 
-        filter(notes != "died")
+        filter(replicate != "prelim") %>% 
+        filter(notes != "died") %>% 
+        filter(replicate != 3)
 
 rep_list_groups <- split(groups, groups$Replicate) # creates a list of replicates
 attr_list <- split(attr, attr$replicate)
@@ -26,8 +27,12 @@ igraph_objects <- lapply(rep_list_groups, func_igraph)
 plot(igraph_objects[[1]], edge.curved = 0, edge.color = "black", weighted = TRUE,
     layout = layout_nicely(igraph_objects[[1]])) 
 
+plot(igraph_objects[[2]], edge.curved = 0, edge.color = "black", weighted = TRUE,
+     layout = layout_nicely(igraph_objects[[1]])) 
+
 ## Permutation using igraph function?
-func_permute_strength(igraph_objects[[1]])
+attributes <- lapply(igraph_objects, vertex_attr)
+
 
 
 ## Visualizing strength of males vs. females and the two treatments
