@@ -18,14 +18,20 @@ func_igraph <- function(rep_groups){
   return(igraph)
 }
 
-## FUNCTION 2: Runs permutations for effect of strength (prediction 1)
-func_permute_strength <- function(igraph_objects){
-  ## Calculating observed coef for effect of strength
-  observed_strength <- as.data.frame(cbind(strength = strength(igraph_object, v = V(igraph_object), mode = c("all"), loops = FALSE), 
-                                           sex = V(igraph_object)$sex))
-
+## FUNCTION 2: Assigns additional attributes (size, replicate, treatment) to each node on each igraph object
+# Input: Takes a lists of igraph objects
+# Ourput: Creates a dataframe of node attributes
+func_attr <- function(igraph_objects){
+  new_attr <- data.frame()
+  for (i in 1:length(igraph_objects)){
+    attr_i <- subset(attr, replicate == i & notes != "died")
+    igraph_objects[[i]] <- set_vertex_attr(igraph_objects[[i]], "size", value = attr_i$thorax.mm)
+    igraph_objects[[i]] <- set_vertex_attr(igraph_objects[[i]], "treatment", value = attr_i$treatment)
+    igraph_objects[[i]] <- set_vertex_attr(igraph_objects[[i]], "replicate", value = attr_i$replicate)
+    new_attr <- rbind(new_attr, vertex_attr(igraph_objects[[i]]))
   }
-
+  return(new_attr)
+}
 
 
 
