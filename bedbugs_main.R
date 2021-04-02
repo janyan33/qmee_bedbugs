@@ -2,6 +2,8 @@ library(tidyverse)
 library(asnipe)
 library(igraph)
 library(ggplot2); theme_set(theme_classic())
+library(lme4)
+library(glmmTMB)
 source("scripts/functions.R")
 
 ### INPUTTING AND ORGANIZING DATA ###
@@ -20,8 +22,6 @@ attr_list <- split(attr, attr$replicate)
 ## Using func_igraph on the list of replicates
 igraph_objects <- lapply(rep_list_groups, func_igraph)
 
-igraph_objects <- lapply(rep_list, func_igraph)
-
 ## Plotting one of the replicates, not very detailed(missing attributes); don't have time to code this rn
 plot(igraph_objects[[1]], edge.curved = 0, edge.color = "black", weighted = TRUE,
     layout = layout_nicely(igraph_objects[[1]])) 
@@ -33,10 +33,7 @@ func_permute_strength(igraph_objects[[1]])
 ## Visualizing strength of males vs. females and the two treatments
 ggplot(data = attr, aes(y = prox_strength, x = treatment, fill = sex)) + geom_boxplot() 
 
-library(lme4)
-library(glmmTMB)
 
-
-
-
-
+## Prediction 1 GLM
+p1.1 <- glm(prox_strength~sex+thorax.mm, data=attr, family = Gamma(link="log"))
+plot(p1.1) # residuals vs fitted and scale-location not straight
