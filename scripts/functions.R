@@ -57,3 +57,9 @@ func_permute_igraph <- function(rep_list_group) {
   igraph <- set_vertex_attr(igraph, "strength", value = strength)
   return(igraph)
 }  
+
+
+
+
+
+

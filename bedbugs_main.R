@@ -18,20 +18,16 @@ attr <- read.csv("data/bbsna_attributes.csv") %>%
         filter(replicate == 1 | replicate == 2) %>% 
         filter(notes != "died")
 
+## CREATING iGRAPH OBJECTS
 ## Using func_igraph on the list of igraph objects - 1 per replicate
 igraph_objects <- lapply(rep_list_groups, func_igraph)
 
-## Need to assign a few more attributes to the nodes (size, treatment)
-#func_attr(igraph_objects)
-
-## Trying the permute function
+## Trying the permute function to create randomized igraph objects
 random_igraphs <- lapply(rep_list_groups, func_permute_igraph)
 
-
-
-## Plotting networks
-lapply(X = random_igraphs, FUN = func_plot_network)
+## Visualizing networks networks
 lapply(X = igraph_objects, FUN = func_plot_network)
+lapply(X = random_igraphs, FUN = func_plot_network)
 
 ## Visualizing strength of males vs. females and the two treatments
 ggplot(data = new_attr, aes(y = strength, x = treatment, fill = sex)) + geom_boxplot() 
