@@ -6,5 +6,5 @@ March 30: For prediction 2, we will use a permutation analysis. Janice created a
 
 April 1: Figuring out the Prediction 1 GLM (females will be more social than males). Fixed effects are size and treatment/replicate, since there's currenly one replicate per treatment. No random effects. Family is Gamma because strength is a continuous positive outcome.
 
-
+**April 2**: Created a function that assigns vertex attributes to all the nodes for the observed networks and outputs this as a dataframe which can then be used for the linear model of the observed networks. Also created a function that performs creates igraph objects where node-labels have been randomized. Now trying to correctly assign the other node attributes to these shuffled networks.
 
