@@ -39,7 +39,11 @@ mount_3 <- graph_from_adjacency_matrix(mount_matrices[[3]], diag = FALSE, weight
 
 ## Assign attributes
 mount_3 <- set_vertex_attr(mount_3, "sex", value = attr_3$sex)
+<<<<<<< HEAD
+strength_mount_3 <- strength(mount_3, v = V(mount_3), mode = c("out"), loops = F)
+=======
 strength_mount_3 <- strength(mount_3, v = V(mount_3), mode = c("all"), loops = F)
+>>>>>>> ca158b99c74266478abd140da18c35655be9c37b
 mount_3 <- set_vertex_attr(mount_3, "strength", value = (strength_mount_3))
 
 V(mount_3)$size <- V(mount_3)$strength
