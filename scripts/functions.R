@@ -10,6 +10,7 @@ func_igraph <- function(rep_groups){
   igraph <- graph_from_adjacency_matrix(ibi_matrix, diag = FALSE, weighted = TRUE, mode = "undirected")
   igraph <- set_vertex_attr(igraph, "sex", 
                             value = ifelse(V(igraph)$name == c("A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L"), "Male", "Female"))
+<<<<<<< HEAD
   V(igraph)$color <- ifelse(V(igraph)$sex == "Female", "red", "blue")
   V(igraph)$label.color <- "white"
   return(igraph)
@@ -39,3 +40,30 @@ func_permute_strength <- function(igraph_object){
   strength_results <- c(obs_coef, sim_coefs)
   strength_results
 }
+=======
+  strength <- strength(igraph)
+  igraph <- set_vertex_attr(igraph, "strength", value = strength)
+  V(igraph)$color <- ifelse(V(igraph)$sex == "Female", "red", "blue")
+  V(igraph)$label.color <- "white"
+  E(igraph)$width <- E(igraph)$weight
+  return(igraph)
+}
+
+## FUNCTION 2: Assigns additional attributes (size, replicate, treatment) to each node on each igraph object
+# Input: Takes a lists of igraph objects
+# Ourput: Creates a dataframe of node attributes
+func_attr <- function(igraph_objects){
+  new_attr <- data.frame()
+  for (i in 1:length(igraph_objects)){
+    attr_i <- subset(attr, replicate == i & notes != "died")
+    igraph_objects[[i]] <- set_vertex_attr(igraph_objects[[i]], "size", value = attr_i$thorax.mm)
+    igraph_objects[[i]] <- set_vertex_attr(igraph_objects[[i]], "treatment", value = attr_i$treatment)
+    igraph_objects[[i]] <- set_vertex_attr(igraph_objects[[i]], "replicate", value = attr_i$replicate)
+    new_attr <- rbind(new_attr, vertex_attr(igraph_objects[[i]]))
+  }
+  return(new_attr)
+}
+
+
+
+>>>>>>> ca158b99c74266478abd140da18c35655be9c37b

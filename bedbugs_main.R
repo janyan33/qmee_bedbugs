@@ -11,29 +11,41 @@ source("scripts/functions.R")
 groups <- read.csv("data/bbsna_aggregations.csv") %>% 
           filter(Replicate != "prelim")
 
+rep_list_groups <- split(groups, groups$Replicate) # creates a list of replicates
+
 ## Attribute data
 attr <- read.csv("data/bbsna_attributes.csv") %>% 
-        filter(replicate == 1:2) %>% 
+        filter(replicate == 1 | replicate == 2) %>% 
         filter(notes != "died")
 
-rep_list_groups <- split(groups, groups$Replicate) # creates a list of replicates
-attr_list <- split(attr, attr$replicate)
-
-## Using func_igraph on the list of replicates
+## Using func_igraph on the list of igraph objects - 1 per replicate
 igraph_objects <- lapply(rep_list_groups, func_igraph)
 
-## Plotting one of the replicates, not very detailed(missing attributes); don't have time to code this rn
-plot(igraph_objects[[1]], edge.curved = 0, edge.color = "black", weighted = TRUE,
-    layout = layout_nicely(igraph_objects[[1]])) 
+## Need to assign a few more attributes to the nodes (size, treatment)
+new_attr <- func_attr(igraph_objects)
 
-## Permutation using igraph function?
-func_permute_strength(igraph_objects[[1]])
+## Now I need to permute the igraph objects
+test <- permute(igraph_objects[[1]], permutation = sample(vcount((igraph_objects[[1]]))))
 
+
+
+
+
+
+
+
+
+
+
+
+git add bedbugs_main.R
 
 ## Visualizing strength of males vs. females and the two treatments
-ggplot(data = attr, aes(y = prox_strength, x = treatment, fill = sex)) + geom_boxplot() 
-
+ggplot(data = new_attr, aes(y = strength, x = treatment, fill = sex)) + geom_boxplot() 
 
 ## Prediction 1 GLM
 p1.1 <- glm(prox_strength~sex+thorax.mm, data=attr, family = Gamma(link="log"))
 plot(p1.1) # residuals vs fitted and scale-location not straight
+
+
+
