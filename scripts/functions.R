@@ -42,7 +42,7 @@ func_permute_strength <- function(igraph_object){
 }
 =======
   strength <- strength(igraph)
-  igraph <- set_vertex_attr(igraph, "strength", value = strength)
+  #igraph <- set_vertex_attr(igraph, "strength", value = strength)
   V(igraph)$color <- ifelse(V(igraph)$sex == "Female", "red", "blue")
   V(igraph)$label.color <- "white"
   E(igraph)$width <- E(igraph)$weight
@@ -63,6 +63,21 @@ func_attr <- function(igraph_objects){
   }
   return(new_attr)
 }
+
+## FUNCTION 3: Visualizing the social networks (this is useful for detecting errors in other parts of the code)
+# Input: An igraph object
+# Output: The SNA graph where size = strength*10
+
+func_plot_network <- function(igraph_object){
+  #V(igraph_object)$size <- V(igraph_object)$strength*10
+  plot(igraph_object, edge.color = "dimgrey")
+}
+
+
+
+
+
+
 
 
 
