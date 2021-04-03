@@ -27,11 +27,8 @@ random_igraphs <- lapply(rep_list_groups, func_permute_igraph)
 
 ## Visualizing networks networks
 lapply(X = igraph_objects, FUN = func_plot_network)
-<<<<<<< HEAD
 
-=======
 lapply(X = random_igraphs, FUN = func_plot_network)
->>>>>>> 7c5f07d4e2c288831b8ab34b5529e188ebf1ded0
 
 ## Visualizing strength of males vs. females and the two treatments
 ggplot(data = new_attr, aes(y = strength, x = treatment, fill = sex)) + geom_boxplot() 
@@ -40,12 +37,10 @@ ggplot(data = new_attr, aes(y = strength, x = treatment, fill = sex)) + geom_box
 ## Prediction 1 GLM
 p1.1 <- glm(prox_strength~sex + thorax.mm, data=attr, family = Gamma(link="log"))
 plot(p1.1) # residuals vs fitted and scale-location not straight
-
 p1.2 <- glm(prox_strength~sex + thorax.mm + replicate, data=attr, family = Gamma(link="log"))
 plot(p1.2) # residuals vs fitted and scale-location look better but still not straight
-
-# quadratic
 thorax.q <- attr$thorax.mm^2
 p1.3 <- glm(prox_strength~sex + thorax.mm + thorax.q + replicate, data=attr, family = Gamma(link="log"))
-plot(p1.3)
+plot(p1.3) #quadratic plots look good
+
 
