@@ -9,8 +9,8 @@ func_igraph <- function(rep_groups){
   igraph <- graph_from_adjacency_matrix(ibi_matrix, diag = FALSE, weighted = TRUE, mode = "undirected")
   igraph <- set_vertex_attr(igraph, "sex", 
                             value = ifelse(V(igraph)$name %in% LETTERS[1:12], "Male", "Female"))
-  V(igraph)$color <- ifelse(V(igraph)$sex == "Female", "red", "blue")
-  V(igraph)$label.color <- "white"
+  strength <- strength(igraph)
+  igraph <- set_vertex_attr(igraph, "strength", value = strength)
   return(igraph)
 }
 
@@ -40,12 +40,14 @@ func_plot_network <- function(igraph_object){
   plot(igraph_object, edge.color = "dimgrey")
 }
 
-## FUNCTION 4: Permute node labels
+## FUNCTION 4: Shuffle node labels
+# Input: aggregations raw data
+# Output: igraph objects with nodes randomized and sexes assigned
 func_permute_igraph <- function(rep_list_group) { 
   group_list <- strsplit(rep_list_group$Members, " ")
   gbi_matrix <- get_group_by_individual(group_list, data_format = "groups")
   ibi_matrix <- get_network(gbi_matrix, data_format = "GBI")
-  
+  #shuffle names 
   new_names <- sample(colnames(ibi_matrix))
   colnames(ibi_matrix) <- new_names
   rownames(ibi_matrix) <- new_names
@@ -58,7 +60,21 @@ func_permute_igraph <- function(rep_list_group) {
   return(igraph)
 }  
 
-
+## FUNCTION 5: 
+func_sim_attr <- function(random_igraphs){
+  sim_attr <- data.frame()
+  for (i in 1:length(random_igraphs)){
+      attr_i <- attr %>% 
+      filter(replicate == i) %>% 
+      rename("name" = "ID") %>% 
+      select(c("name", "thorax.mm", "replicate", "treatment"))
+      new_attr <- as.data.frame(vertex_attr(random_igraphs[[i]])) %>% 
+      left_join(attr_i, by = "name")
+      sim_attr <- rbind(sim_attr, new_attr)
+  }
+  sim_model <- lm(strength ~ sex, data = sim_attr)
+  return(coef(sim_model)[2])
+}
 
 
 

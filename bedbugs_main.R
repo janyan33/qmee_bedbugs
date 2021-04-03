@@ -22,12 +22,21 @@ attr <- read.csv("data/bbsna_attributes.csv") %>%
 ## Using func_igraph on the list of igraph objects - 1 per replicate
 igraph_objects <- lapply(rep_list_groups, func_igraph)
 
-## Trying the permute function to create randomized igraph objects
-random_igraphs <- lapply(rep_list_groups, func_permute_igraph)
-
 ## Visualizing networks networks
 lapply(X = igraph_objects, FUN = func_plot_network)
-lapply(X = random_igraphs, FUN = func_plot_network)
+
+## WORK IN PROGRESS
+
+## PREDICTION 1 PERMUTATION
+n_sim <- 10
+sim_coefs <- numeric(n_sim)
+
+for (i in 1:n_sim){
+  random_igraphs <- lapply(rep_list_groups, func_permute_igraph)
+  sim_coefs[i] <- func_sim_attr(random_igraphs)
+}
+hist(sim_coefs)
+
 
 ## Visualizing strength of males vs. females and the two treatments
 ggplot(data = new_attr, aes(y = strength, x = treatment, fill = sex)) + geom_boxplot() 
