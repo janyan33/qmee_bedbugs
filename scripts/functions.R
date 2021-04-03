@@ -65,7 +65,7 @@ func_permute_igraph <- function(rep_list_group) {
 # Steps: creates a dataframe combining the attributes from the different igraph objects
        # then runs the glm using this new dataframe 
 # Output: the coefficient from the glm for effect of sex on strength
-func_sim_attr <- function(random_igraphs){
+func_random_model <- function(random_igraphs){
   sim_attr <- data.frame()
   for (i in 1:length(random_igraphs)){
       attr_i <- attr %>% 

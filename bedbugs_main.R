@@ -6,8 +6,7 @@ library(lme4)
 library(glmmTMB)
 source("scripts/functions.R")
 
-### INPUTTING AND ORGANIZING DATA ###
-
+################# INPUTTING AND ORGANIZING DATA ####################
 ## Data for aggregation-based networks
 groups <- read.csv("data/bbsna_aggregations.csv") %>% 
           filter(Replicate != "prelim")
@@ -19,34 +18,34 @@ attr <- read.csv("data/bbsna_attributes.csv") %>%
         filter(replicate == 1 | replicate == 2) %>% 
         filter(notes != "died")
 
-## CREATING iGRAPH OBJECTS
-## Using func_igraph on the list of igraph objects - 1 per replicate
+################# OBSERVED AGGREGATION NETWORKS ####################
+# Using func_igraph on rep_list_groups to create a list of igraph objects (1 per replicate)
 igraph_objects <- lapply(rep_list_groups, func_igraph)
 
-## Output attributes
+## Creates a data frame of node attributes from all networks (will use this for our model)
 attr_observed <- func_attr(igraph_objects)
+print(attr_observed)
 
-## Visualizing networks networks
+## Visualizing the observed networks
 lapply(X = igraph_objects, FUN = func_plot_network)
 
-## PREDICTION 1 PERMUTATION
+################# PREDICTION 1 PERMUTATION ##########################
 n_sim <- 999
 set.seed(33)
 sim_coefs <- numeric(n_sim)
 
 for (i in 1:n_sim){
-  random_igraphs <- lapply(rep_list_groups, func_permute_igraph)
-  sim_coefs[i] <- func_sim_attr(random_igraphs)
+  random_igraphs <- lapply(rep_list_groups, func_permute_igraph) # Creates igraph objects with shuffled nodes
+  sim_coefs[i] <- func_random_model(random_igraphs) # Runs the glm on the shuffled igraph object; save coefs
 }
-hist(sim_coefs)
-abline(v = coef(predict1.3)[2])
+hist(sim_coefs) 
+abline(v = coef(predict1.3)[2]) # Need to run predict.1.3 code from below first (fix order later)
 
-
-## Visualizing strength of males vs. females and the two treatments
+################ VISUALIZING MALE VS. FEMALE STRENGTH ##############
 ggplot(data = new_attr, aes(y = strength, x = treatment, fill = sex)) + geom_boxplot() 
 
 
-### STATISTICS ###
+### GENERAL LINEAR MODELS ###
 
 ## Prediction 1 GLM
 predict1.1 <- glm(prox_strength~sex + thorax.mm, data=attr, family = Gamma(link="log"))
