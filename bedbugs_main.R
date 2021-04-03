@@ -35,12 +35,26 @@ ggplot(data = new_attr, aes(y = strength, x = treatment, fill = sex)) + geom_box
 
 
 ## Prediction 1 GLM
-p1.1 <- glm(prox_strength~sex + thorax.mm, data=attr, family = Gamma(link="log"))
-plot(p1.1) # residuals vs fitted and scale-location not straight
-p1.2 <- glm(prox_strength~sex + thorax.mm + replicate, data=attr, family = Gamma(link="log"))
-plot(p1.2) # residuals vs fitted and scale-location look better but still not straight
+predict1.1 <- glm(prox_strength~sex + thorax.mm, data=attr, family = Gamma(link="log"))
+plot(predict1.1) # residuals vs fitted and scale-location not straight
+predict1.2 <- glm(prox_strength~sex + thorax.mm + replicate, data=attr, family = Gamma(link="log"))
+plot(predict1.2) # residuals vs fitted and scale-location look better but still not straight
 thorax.q <- attr$thorax.mm^2
-p1.3 <- glm(prox_strength~sex + thorax.mm + thorax.q + replicate, data=attr, family = Gamma(link="log"))
-plot(p1.3) #quadratic plots look good
+predict1.3 <- glm(prox_strength~sex + thorax.mm + thorax.q + replicate, data=attr, family = Gamma(link="log"))
+plot(predict1.3) #quadratic plots look good # use this?
+
+## Prediction 3 GLM 
+social.low <- attr %>% group_by(treatment) %>% filter(treatment=="low") #low treatment data
+social.high <- attr %>% group_by(treatment) %>% filter(treatment=="high") #high treatment data
+
+predict3.low <- glm(matings~prox_strength + thorax.mm, data=social.low, family = Gamma(link="log"))
+plot(predict3.low) # all good except residual vs fitted
+# log or quadratic prox_strength made it worse
+
+predict3.high <- glm(matings~prox_strength + thorax.mm, data=social.high, family = Gamma(link="log"))
+plot(predict3.high) # plots are not good fit, try log
+social.high.log <- log(social.high$prox_strength)
+predict3.high2 <- glm(matings~prox_strength + social.high.log + thorax.mm, data=social.high, family = Gamma(link="log"))
+plot(predict3.high2 ) # need everything log or just prox_strength?
 
 
