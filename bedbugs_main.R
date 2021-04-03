@@ -26,8 +26,6 @@ igraph_objects <- lapply(rep_list_groups, func_igraph)
 ## Visualizing networks networks
 lapply(X = igraph_objects, FUN = func_plot_network)
 
-<<<<<<< HEAD
-## WORK IN PROGRESS
 
 ## PREDICTION 1 PERMUTATION
 n_sim <- 10
@@ -39,9 +37,6 @@ for (i in 1:n_sim){
 }
 hist(sim_coefs)
 
-=======
-lapply(X = random_igraphs, FUN = func_plot_network)
->>>>>>> 6dccac503a90c9f52f408698f9a9adeb5e5347ee
 
 ## Visualizing strength of males vs. females and the two treatments
 ggplot(data = new_attr, aes(y = strength, x = treatment, fill = sex)) + geom_boxplot() 
