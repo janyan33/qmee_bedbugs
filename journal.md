@@ -4,10 +4,14 @@
 
 **March 30:** For prediction 2, we will use a permutation analysis. Janice created a new script for all the functions to keep the main script cleaner (e.g, igraph functions). She started the strength permutation in order to have the observed coef for the effect of strength ~ sex. Then randomizing the networks 1000 times to get 1000 new coefs for strength ~ sex under the null hypothesis, but the randomizing isn't working, so we will be figuring this out shortly
 
+<<<<<<< HEAD
 **April 1:** Figuring out the Prediction 1 GLM (females will be more social than males). Fixed effects are size and treatment/replicate, since there's currenly one replicate per treatment. No random effects. Family is Gamma because strength is a continuous positive outcome.
 
 **April 1:** Attempting to fix permutation function for prediction 1; I'm trying to use the permute() function from igraph to 
 shuffle the nodes of the network while maintaining the edges. Once all the nodes are shuffled, I'd compute a new strength value for each of them 
 and run the same glm and use these coefs to create a null distribution. 
+=======
+**April 2**: Created a function that assigns vertex attributes to all the nodes for the observed networks and outputs this as a dataframe which can then be used for the linear model of the observed networks. Also created a function that performs creates igraph objects where node-labels have been randomized. Now trying to correctly assign the other node attributes to these shuffled networks.
+>>>>>>> 7c5f07d4e2c288831b8ab34b5529e188ebf1ded0
 
 Currently stuck with how to combine the lists of strengths back onto the original dataframe with the size data. Lists of lists make my head hurt. Signing off for now. 
