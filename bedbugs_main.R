@@ -39,14 +39,21 @@ func_attr(igraph_objects)
 lapply(X = igraph_objects, FUN = func_plot_network)
 
 
-
-
 ## Visualizing strength of males vs. females and the two treatments
 ggplot(data = new_attr, aes(y = strength, x = treatment, fill = sex)) + geom_boxplot() 
 
+
 ## Prediction 1 GLM
-p1.1 <- glm(prox_strength~sex+thorax.mm, data=attr, family = Gamma(link="log"))
+p1.1 <- glm(prox_strength~sex + thorax.mm, data=attr, family = Gamma(link="log"))
 plot(p1.1) # residuals vs fitted and scale-location not straight
+
+p1.2 <- glm(prox_strength~sex + thorax.mm + replicate, data=attr, family = Gamma(link="log"))
+plot(p1.2) # residuals vs fitted and scale-location look better but still not straight
+
+# quadratic
+thorax.q <- attr$thorax.mm^2
+p1.3 <- glm(prox_strength~sex + thorax.mm + thorax.q + replicate, data=attr, family = Gamma(link="log"))
+plot(p1.3)
 
 
 
