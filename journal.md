@@ -13,3 +13,6 @@ and run the same glm and use these coefs to create a null distribution.
 **April 2**: Created a function that assigns vertex attributes to all the nodes for the observed networks and outputs this as a dataframe which can then be used for the linear model of the observed networks. Also created a function that performs creates igraph objects where node-labels have been randomized. Now trying to correctly assign the other node attributes to these shuffled networks.
 
 Also trying GLM for prediction one, after first diagnostic plots we added replicate as a predictor, then we also added a quadratic size variable and our diagnostic plots look better.
+
+Got the permutation for prediction 1 to work. The code runs the glm on 1000 simulated networks and compares the observed coef for sex to the simulated coefs. I used a combination of different functions documented in the functions.R file (there are probably simpler ways to get this working but it was a struggle). 
+To do tomorrow (April 3rd): get the script to compute p-values, then check for errors in the permutation process, then begin working on the next predictions

@@ -23,12 +23,15 @@ attr <- read.csv("data/bbsna_attributes.csv") %>%
 ## Using func_igraph on the list of igraph objects - 1 per replicate
 igraph_objects <- lapply(rep_list_groups, func_igraph)
 
+## Output attributes
+attr_observed <- func_attr(igraph_objects)
+
 ## Visualizing networks networks
 lapply(X = igraph_objects, FUN = func_plot_network)
 
-
 ## PREDICTION 1 PERMUTATION
-n_sim <- 10
+n_sim <- 999
+set.seed(33)
 sim_coefs <- numeric(n_sim)
 
 for (i in 1:n_sim){
@@ -36,6 +39,7 @@ for (i in 1:n_sim){
   sim_coefs[i] <- func_sim_attr(random_igraphs)
 }
 hist(sim_coefs)
+abline(v = coef(predict1.3)[2])
 
 
 ## Visualizing strength of males vs. females and the two treatments
