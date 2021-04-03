@@ -55,4 +55,3 @@ thorax.q <- attr$thorax.mm^2
 p1.3 <- glm(prox_strength~sex + thorax.mm + thorax.q + replicate, data=attr, family = Gamma(link="log"))
 plot(p1.3)
 
-
