@@ -38,12 +38,17 @@ for (i in 1:n_sim){
   random_igraphs <- lapply(rep_list_groups, func_permute_igraph) # Creates igraph objects with shuffled nodes
   sim_coefs[i] <- func_random_model(random_igraphs) # Runs the glm on the shuffled igraph object; save coefs
 }
-hist(sim_coefs) 
-abline(v = coef(predict1.3)[2]) # Need to run predict.1.3 code from below first (fix order later)
+hist(sim_coefs, main = "Prediction 1", xlab = "Coefficient value for sexMale")
+lines(x = c(obs_strength_coef, obs_strength_coef), y = c(0, 270), col = "red", lty = "dashed", lwd = 2) 
+# Need to run predict.1.3 code from below first (fix order later)
+if (obs_strength_coef >= mean(sim_coefs)) {
+  pred1_p <- 2*mean(sim_coefs >= obs_strength_coef) } else {
+    pred1_p <- 2*mean(sim_coefs <= obs_strength_coef)
+  }
+text(x = 0.4, y = 100, "p = 0.32")
 
 ################ VISUALIZING MALE VS. FEMALE STRENGTH ##############
 ggplot(data = new_attr, aes(y = strength, x = treatment, fill = sex)) + geom_boxplot() 
-
 
 ### GENERAL LINEAR MODELS ###
 
@@ -57,6 +62,7 @@ plot(predict1.2)
 thorax.q <- attr$thorax.mm^2
 predict1.3 <- glm(prox_strength~sex + thorax.mm + thorax.q + replicate, data=attr, family = Gamma(link="log"))
 plot(predict1.3) 
+obs_strength_coef <- coef(predict1.3)[2]
 #quadratic plots look good # use this?
 
 ## Prediction 3 GLM 

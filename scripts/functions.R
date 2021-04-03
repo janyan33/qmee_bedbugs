@@ -72,8 +72,9 @@ func_random_model <- function(random_igraphs){
       filter(replicate == i) %>% 
       rename("name" = "ID") %>% 
       select(c("name", "thorax.mm", "replicate", "treatment"))
+      
       new_attr <- as.data.frame(vertex_attr(random_igraphs[[i]])) %>% 
-      left_join(attr_i, by = "name")
+                  left_join(attr_i, by = "name")
       sim_attr <- rbind(sim_attr, new_attr)
   }
   sim_model <- glm(strength ~ sex + thorax.mm + (thorax.mm)^2 + replicate, data=sim_attr, family = Gamma(link="log"))
