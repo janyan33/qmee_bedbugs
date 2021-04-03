@@ -56,4 +56,3 @@ p1.3 <- glm(prox_strength~sex + thorax.mm + thorax.q + replicate, data=attr, fam
 plot(p1.3)
 
 
-
