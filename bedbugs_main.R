@@ -32,6 +32,19 @@ print(attr_observed)
 ## Visualizing the observed networks
 lapply(X = igraph_objects, FUN = func_plot_network)
 
+################# PREDICTION 1 GLM ##########################
+predict1.1 <- glm(prox_strength~sex + thorax.mm, data=attr, family = Gamma(link="log"))
+plot(predict1.1) 
+# residuals vs fitted and scale-location not straight
+predict1.2 <- glm(prox_strength~sex + thorax.mm + replicate, data=attr, family = Gamma(link="log"))
+plot(predict1.2) 
+# residuals vs fitted and scale-location look better but still not straight
+thorax.q <- attr$thorax.mm^2
+predict1.3 <- glm(prox_strength~sex + thorax.mm + thorax.q + replicate, data=attr, family = Gamma(link="log"))
+plot(predict1.3) 
+obs_strength_coef <- coef(predict1.3)[2]
+#quadratic plots look good # use this?
+
 ################# PREDICTION 1 PERMUTATION ##########################
 n_sim_1 <- 999
 set.seed(33)
@@ -57,22 +70,7 @@ ggplot(data = attr_observed, aes(y = strength, x = treatment, fill = sex)) + geo
 ibi_matrices <- lapply(X = rep_list_groups, FUN = func_ibi)
 lapply(X = ibi_matrices, FUN = func_permute_assort)
 
-### GENERAL LINEAR MODELS ###
-
-## Prediction 1 GLM
-predict1.1 <- glm(prox_strength~sex + thorax.mm, data=attr, family = Gamma(link="log"))
-plot(predict1.1) 
-# residuals vs fitted and scale-location not straight
-predict1.2 <- glm(prox_strength~sex + thorax.mm + replicate, data=attr, family = Gamma(link="log"))
-plot(predict1.2) 
-# residuals vs fitted and scale-location look better but still not straight
-thorax.q <- attr$thorax.mm^2
-predict1.3 <- glm(prox_strength~sex + thorax.mm + thorax.q + replicate, data=attr, family = Gamma(link="log"))
-plot(predict1.3) 
-obs_strength_coef <- coef(predict1.3)[2]
-#quadratic plots look good # use this?
-
-## Prediction 3 GLM 
+################# PREDICTION 3 GLM ##########################
 social.low <- attr %>% group_by(treatment) %>% filter(treatment=="low") #low treatment data
 social.high <- attr %>% group_by(treatment) %>% filter(treatment=="high") #high treatment data
 
