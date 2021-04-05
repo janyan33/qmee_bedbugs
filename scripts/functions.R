@@ -91,19 +91,21 @@ func_random_model <- function(random_igraphs){
   return(coef(sim_model)[2])
 }
 
-## FUNCTION 7
+## FUNCTION 7: Assortativity permutation
+# Input: An ibi matrix
+# Output: Histogram of permutation + the observed assortativity score + the p-value
 func_permute_assort <- function(ibi_matrix){
      sex_table <- as.data.frame(colnames(ibi_matrix)) %>% 
                   rename("ID" = "colnames(ibi_matrix)") %>% 
                   mutate(sex = ifelse(ID %in% LETTERS[1:12], "Male", "Female"))
-                  
+     # Getting observed assortativity score
      obs_assort_index <- assortment.discrete(ibi_matrix, 
                                              types = sex_table$sex, weighted = TRUE)$r    
-     n_sim_2 <- 999
+     n_sim_2 <- 999 # Setting up the permutation
      set.seed(33)
      sim_assort_index <- numeric(n_sim_2)
      
-     for (i in 1:n_sim_2){
+     for (i in 1:n_sim_2){ #Runs the permutation
         new_names <- sample(colnames(ibi_matrix))
         colnames(ibi_matrix) <- new_names
         rownames(ibi_matrix) <- new_names
@@ -112,12 +114,16 @@ func_permute_assort <- function(ibi_matrix){
                          rename("ID" = "colnames(ibi_matrix)") %>% 
                          mutate(sex = ifelse(ID %in% LETTERS[1:12], "Male", "Female"))
 
-        sim_assort_index[i] <- assortment.discrete(ibi_matrix_new, types = sex_table$sex, 
-                                                weighted = TRUE)$r  
-  }
-  hist(sim_assort_index, breaks = 25)
-  abline(v = obs_assort_index)
-  return(obs_assort_index)
+        sim_assort_index[i] <- assortment.discrete(ibi_matrix, types = sex_table_new$sex, 
+                                                   weighted = TRUE)$r  
+     }
+     if (obs_assort_index >= mean(sim_assort_index)) { #Computes the p-value
+         p <- 2*mean(sim_assort_index >= obs_assort_index) } else {
+         p <- 2*mean(sim_assort_index <= obs_assort_index)
+     }
+     
+     list <- list("p-value" = p, "observed assortativity score" = obs_assort_index)
+     hist(sim_assort_index, breaks = 25)
+     abline(v = obs_assort_index, col = "red", lty = "dashed")
+     return(list)
 }
-
-func_permute_assort(ibi_matrix)

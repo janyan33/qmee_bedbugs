@@ -21,4 +21,6 @@ To do tomorrow (April 3rd): get the script to compute p-values, then check for e
 
 **April 4th**: Created a function that does the permutation test for assortativity scores. It seems to work but I get different numbers than when I used slightly different code before so at least one of them must be doing it wrong. I need to figure out where the problem is. Sidenote: it feels like the number of functions we're creating that each do a very specific thing is getting out of hand... haven't thought of a better way to do things though. 
 
+Update: The prediction 2 permutation now gives me the same answers as when I coded this before so that's a good sign. I don't know what I changed but that's ok. The function now outputs the histogram, p-value, and observed assortativity score. 
+
 

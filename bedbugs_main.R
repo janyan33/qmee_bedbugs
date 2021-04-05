@@ -53,8 +53,9 @@ text(x = 0.4, y = 100, "p = 0.32")
 ################ VISUALIZING MALE VS. FEMALE STRENGTH ##############
 ggplot(data = attr_observed, aes(y = strength, x = treatment, fill = sex)) + geom_boxplot() 
 
-################# STARTING PREDICTION 2 ############################
+################# PREDICTION 2: ASSORTATIVITY OF INDIVIDUAL NETWORKS #####################
 ibi_matrices <- lapply(X = rep_list_groups, FUN = func_ibi)
+lapply(X = ibi_matrices, FUN = func_permute_assort)
 
 ### GENERAL LINEAR MODELS ###
 
