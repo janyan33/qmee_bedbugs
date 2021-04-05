@@ -1,9 +1,12 @@
+## setwd("C:/Users/jy33/OneDrive/Desktop/R/bedbugs")
+
 library(tidyverse)
 library(asnipe)
 library(igraph)
 library(ggplot2); theme_set(theme_classic())
 library(lme4)
 library(glmmTMB)
+library(assortnet)
 source("scripts/functions.R")
 
 ################# INPUTTING AND ORGANIZING DATA ####################
@@ -30,11 +33,11 @@ print(attr_observed)
 lapply(X = igraph_objects, FUN = func_plot_network)
 
 ################# PREDICTION 1 PERMUTATION ##########################
-n_sim <- 999
+n_sim_1 <- 999
 set.seed(33)
-sim_coefs <- numeric(n_sim)
+sim_coefs <- numeric(n_sim_1)
 
-for (i in 1:n_sim){
+for (i in 1:n_sim_1){
   random_igraphs <- lapply(rep_list_groups, func_permute_igraph) # Creates igraph objects with shuffled nodes
   sim_coefs[i] <- func_random_model(random_igraphs) # Runs the glm on the shuffled igraph object; save coefs
 }
@@ -48,7 +51,10 @@ if (obs_strength_coef >= mean(sim_coefs)) {
 text(x = 0.4, y = 100, "p = 0.32")
 
 ################ VISUALIZING MALE VS. FEMALE STRENGTH ##############
-ggplot(data = new_attr, aes(y = strength, x = treatment, fill = sex)) + geom_boxplot() 
+ggplot(data = attr_observed, aes(y = strength, x = treatment, fill = sex)) + geom_boxplot() 
+
+################# STARTING PREDICTION 2 ############################
+ibi_matrices <- lapply(X = rep_list_groups, FUN = func_ibi)
 
 ### GENERAL LINEAR MODELS ###
 

@@ -14,7 +14,17 @@ func_igraph <- function(rep_groups){
   return(igraph)
 }
 
-## FUNCTION 2: Assigns additional attributes (size, replicate, treatment) to each node on each igraph object
+## FUNCTION 2: Turns raw data from bbsna_aggregations into ibi matrices (one per replicate)
+# Useful for feeding into assortment.discrete 
+func_ibi <- function(rep_groups){
+  group_list <- strsplit(rep_groups$Members, " ")
+  gbi_matrix <- get_group_by_individual(group_list, data_format = "groups")
+  ibi_matrix <- get_network(gbi_matrix, data_format = "GBI")
+  ibi_matrix <- ibi_matrix[order(rownames(ibi_matrix)) , order(colnames(ibi_matrix))] # alphabetical order
+  return(ibi_matrix)
+}
+
+## FUNCTION 3: Assigns additional attributes (size, replicate, treatment) to each node on each igraph object
 # Input: Takes a lists of igraph objects
 # Ourput: Creates a dataframe of node attributes
 func_attr <- function(igraph_objects){
@@ -29,7 +39,7 @@ func_attr <- function(igraph_objects){
   return(new_attr)
 }
 
-## FUNCTION 3: Visualizing the social networks (this is useful for detecting errors in other parts of the code)
+## FUNCTION 4: Visualizing the social networks (this is useful for detecting errors in other parts of the code)
 # Input: An igraph object
 # Output: The SNA graph where size = strength*10
 func_plot_network <- function(igraph_object){
@@ -40,7 +50,7 @@ func_plot_network <- function(igraph_object){
   plot(igraph_object, edge.color = "dimgrey")
 }
 
-## FUNCTION 4: Shuffle node labels
+## FUNCTION 5: Shuffle node labels
 # Input: aggregations raw data
 # Output: igraph objects with nodes randomized and sexes assigned
 func_permute_igraph <- function(rep_list_group) { 
@@ -60,7 +70,7 @@ func_permute_igraph <- function(rep_list_group) {
   return(igraph)
 }  
 
-## FUNCTION 5: Assigns the rest of the node attributes to the randomized nodes using left_join; runs the glm
+## FUNCTION 6: Assigns the rest of the node attributes to the randomized nodes using left_join; runs the glm
 # Input: a list of randomized igraph objects
 # Steps: creates a dataframe combining the attributes from the different igraph objects
        # then runs the glm using this new dataframe 
@@ -81,6 +91,33 @@ func_random_model <- function(random_igraphs){
   return(coef(sim_model)[2])
 }
 
+## FUNCTION 7
+func_permute_assort <- function(ibi_matrix){
+     sex_table <- as.data.frame(colnames(ibi_matrix)) %>% 
+                  rename("ID" = "colnames(ibi_matrix)") %>% 
+                  mutate(sex = ifelse(ID %in% LETTERS[1:12], "Male", "Female"))
+                  
+     obs_assort_index <- assortment.discrete(ibi_matrix, 
+                                             types = sex_table$sex, weighted = TRUE)$r    
+     n_sim_2 <- 999
+     set.seed(33)
+     sim_assort_index <- numeric(n_sim_2)
+     
+     for (i in 1:n_sim_2){
+        new_names <- sample(colnames(ibi_matrix))
+        colnames(ibi_matrix) <- new_names
+        rownames(ibi_matrix) <- new_names
+    
+        sex_table_new <- as.data.frame(colnames(ibi_matrix)) %>% 
+                         rename("ID" = "colnames(ibi_matrix)") %>% 
+                         mutate(sex = ifelse(ID %in% LETTERS[1:12], "Male", "Female"))
 
+        sim_assort_index[i] <- assortment.discrete(ibi_matrix_new, types = sex_table$sex, 
+                                                weighted = TRUE)$r  
+  }
+  hist(sim_assort_index, breaks = 25)
+  abline(v = obs_assort_index)
+  return(obs_assort_index)
+}
 
-
+func_permute_assort(ibi_matrix)

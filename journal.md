@@ -16,3 +16,9 @@ Also trying GLM for prediction one, after first diagnostic plots we added replic
 
 Got the permutation for prediction 1 to work. The code runs the glm on 1000 simulated networks and compares the observed coef for sex to the simulated coefs. I used a combination of different functions documented in the functions.R file (there are probably simpler ways to get this working but it was a struggle). 
 To do tomorrow (April 3rd): get the script to compute p-values, then check for errors in the permutation process, then begin working on the next predictions
+
+**April 3rd**: Updated code for prediction 1 so that it would compute p-values. 
+
+**April 4th**: Created a function that does the permutation test for assortativity scores. It seems to work but I get different numbers than when I used slightly different code before so at least one of them must be doing it wrong. I need to figure out where the problem is. Sidenote: it feels like the number of functions we're creating that each do a very specific thing is getting out of hand... haven't thought of a better way to do things though. 
+
+
