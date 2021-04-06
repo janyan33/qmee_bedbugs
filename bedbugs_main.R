@@ -1,5 +1,5 @@
 ## setwd("C:/Users/jy33/OneDrive/Desktop/R/bedbugs")
-
+## par(mar=c(1,1,1,1)) # margins too large
 library(tidyverse)
 library(asnipe)
 library(igraph)
@@ -33,17 +33,8 @@ print(attr_observed)
 lapply(X = igraph_objects, FUN = func_plot_network)
 
 ######################## PREDICTION 1 GLM ##########################
-predict1.1 <- glm(strength~sex + size, data=attr_observed, family = Gamma(link="log"))
-plot(predict1.1) 
-# residuals vs fitted and scale-location not straight
-predict1.2 <- glm(strength~sex + size + replicate, data=attr_observed, family = Gamma(link="log"))
-plot(predict1.2) 
-# residuals vs fitted and scale-location look better but still not straight
-size.q <- attr_observed$size^2
-predict1.3 <- glm(strength~sex + size + size.q + replicate, data=attr_observed, family = Gamma(link="log"))
-plot(predict1.3) 
-obs_strength_coef <- coef(predict1.3)[2]
-#quadratic plots look good # use this?
+predict1 <- glm(strength~sex + size + replicate, data=attr_observed, family = Gamma(link="log"))
+plot(predict1) ##### USE THIS
 
 ###################### PREDICTION 1 PERMUTATION ##########################
 n_sim_1 <- 999
