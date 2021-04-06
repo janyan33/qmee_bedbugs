@@ -21,7 +21,11 @@ attr <- read.csv("data/bbsna_attributes.csv") %>%
         filter(replicate == 1 | replicate == 2) %>% 
         filter(notes != "died")
 
+<<<<<<< HEAD
 ################# CREATING OBSERVED AGGREGATION NETWORKS ####################
+=======
+#################### OBSERVED AGGREGATION NETWORKS ####################
+>>>>>>> a637ce94c298b9f53717bb02e1cef95e860d13a6
 # Using func_igraph on rep_list_groups to create a list of igraph objects (1 per replicate)
 igraph_objects <- lapply(rep_list_groups, func_igraph)
 
@@ -32,21 +36,31 @@ print(attr_observed)
 ## Visualizing the observed networks
 lapply(X = igraph_objects, FUN = func_plot_network)
 
+<<<<<<< HEAD
 ######################### PREDICTION 1 GLM ##################################
 predict1.1 <- glm(prox_strength~sex + thorax.mm, data=attr, family = Gamma(link="log"))
+=======
+######################## PREDICTION 1 GLM ##########################
+predict1.1 <- glm(strength~sex + size, data=attr_observed, family = Gamma(link="log"))
+>>>>>>> a637ce94c298b9f53717bb02e1cef95e860d13a6
 plot(predict1.1) 
 # residuals vs fitted and scale-location not straight
-predict1.2 <- glm(prox_strength~sex + thorax.mm + replicate, data=attr, family = Gamma(link="log"))
+predict1.2 <- glm(strength~sex + size + replicate, data=attr_observed, family = Gamma(link="log"))
 plot(predict1.2) 
 # residuals vs fitted and scale-location look better but still not straight
-thorax.q <- attr$thorax.mm^2
-predict1.3 <- glm(prox_strength~sex + thorax.mm + thorax.q + replicate, data=attr, family = Gamma(link="log"))
+size.q <- attr_observed$size^2
+predict1.3 <- glm(strength~sex + size + size.q + replicate, data=attr_observed, family = Gamma(link="log"))
 plot(predict1.3) 
 
 #quadratic plots look good # use this?
 
+<<<<<<< HEAD
 ######################### PREDICTION 1 PERMUTATION ##########################
 n_sim_1 <- 99
+=======
+###################### PREDICTION 1 PERMUTATION ##########################
+n_sim_1 <- 999
+>>>>>>> a637ce94c298b9f53717bb02e1cef95e860d13a6
 set.seed(33)
 sim_coefs <- numeric(n_sim_1)
 
@@ -61,6 +75,7 @@ sim_coefs <- c(sim_coefs, coef(predict1.3)[2])
 hist(sim_coefs, main = "Prediction 1", xlab = "Coefficient value for sexMale")
 lines(x = c(coef(predict1.3)[2], coef(predict1.3)[2]), y = c(0, 270), col = "red", lty = "dashed", lwd = 2) 
 
+<<<<<<< HEAD
 # Obtain p-value
 if (coef(predict1.3)[2] >= mean(sim_coefs)) {
     pred1_p <- 2*mean(sim_coefs >= coef(predict1.3)[2]) } else {
@@ -68,6 +83,10 @@ if (coef(predict1.3)[2] >= mean(sim_coefs)) {
 }
 # Add p-value to histogram
 text(x = 0.4, y = 100, "p = 0.32")
+=======
+################### VISUALIZING MALE VS. FEMALE STRENGTH #################
+ggplot(data = attr_observed, aes(y = strength, x = treatment, fill = sex)) + geom_boxplot() 
+>>>>>>> a637ce94c298b9f53717bb02e1cef95e860d13a6
 
 ################# PREDICTION 2: ASSORTATIVITY OF INDIVIDUAL NETWORKS #####################
 # Creates the observed ibi matrices for aggregation networks
@@ -75,7 +94,7 @@ ibi_matrices <- lapply(X = rep_list_groups, FUN = func_ibi)
 # Runs the permutation test (see function 7 in functions.R for more info)
 lapply(X = ibi_matrices, FUN = func_permute_assort)
 
-################# PREDICTION 3 GLM ##########################
+##################### PREDICTION 3 GLM ##########################
 social.low <- attr %>% group_by(treatment) %>% filter(treatment=="low") #low treatment data
 social.high <- attr %>% group_by(treatment) %>% filter(treatment=="high") #high treatment data
 
