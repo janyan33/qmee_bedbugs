@@ -121,7 +121,7 @@ func_permute_assort <- function(ibi_matrix){
          p <- 2*mean(sim_assort_index >= obs_assort_index) } else {
          p <- 2*mean(sim_assort_index <= obs_assort_index)
      }
-     
+     sim_assort_index <- c(sim_assort_index, obs_assort_index)
      list <- list("p-value" = p, "observed assortativity score" = obs_assort_index)
      hist(sim_assort_index, breaks = 25)
      abline(v = obs_assort_index, col = "red", lty = "dashed")
