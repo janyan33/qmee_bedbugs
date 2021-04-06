@@ -9,7 +9,7 @@ library(glmmTMB)
 library(assortnet)
 source("scripts/functions.R")
 
-################# INPUTTING AND ORGANIZING DATA ####################
+###################### INPUTTING AND ORGANIZING DATA ########################
 ## Data for aggregation-based networks
 groups <- read.csv("data/bbsna_aggregations.csv") %>% 
           filter(Replicate != "prelim")
@@ -21,7 +21,9 @@ attr <- read.csv("data/bbsna_attributes.csv") %>%
         filter(replicate == 1 | replicate == 2) %>% 
         filter(notes != "died")
 
-#################### OBSERVED AGGREGATION NETWORKS ####################
+
+################# CREATING OBSERVED AGGREGATION NETWORKS ####################
+
 # Using func_igraph on rep_list_groups to create a list of igraph objects (1 per replicate)
 igraph_objects <- lapply(rep_list_groups, func_igraph)
 
@@ -32,33 +34,43 @@ print(attr_observed)
 ## Visualizing the observed networks
 lapply(X = igraph_objects, FUN = func_plot_network)
 
+
 ######################## PREDICTION 1 GLM ##########################
 predict1 <- glm(strength~sex + size + replicate, data=attr_observed, family = Gamma(link="log"))
-plot(predict1) ##### USE THIS
+plot(predict1) 
 
-###################### PREDICTION 1 PERMUTATION ##########################
-n_sim_1 <- 999
+######################## PREDICTION 1 PERMUTATION ##########################
+n_sim_1 <- 99
 set.seed(33)
 sim_coefs <- numeric(n_sim_1)
 
 for (i in 1:n_sim_1){
-  random_igraphs <- lapply(rep_list_groups, func_permute_igraph) # Creates igraph objects with shuffled nodes
-  sim_coefs[i] <- func_random_model(random_igraphs) # Runs the glm on the shuffled igraph object; save coefs
+  # Creates new igraph objects where the nodes are shuffled
+  random_igraphs <- lapply(rep_list_groups, func_permute_igraph)
+  # Runs the glm on the new shuffled igraph objects; save coefs
+  sim_coefs[i] <- func_random_model(random_igraphs) 
 }
+# Plot histogram 
+sim_coefs <- c(sim_coefs, coef(predict1.3)[2])
 hist(sim_coefs, main = "Prediction 1", xlab = "Coefficient value for sexMale")
-lines(x = c(obs_strength_coef, obs_strength_coef), y = c(0, 270), col = "red", lty = "dashed", lwd = 2) 
-# Need to run predict.1.3 code from below first (fix order later)
-if (obs_strength_coef >= mean(sim_coefs)) {
-  pred1_p <- 2*mean(sim_coefs >= obs_strength_coef) } else {
-    pred1_p <- 2*mean(sim_coefs <= obs_strength_coef)
-  }
+lines(x = c(coef(predict1.3)[2], coef(predict1.3)[2]), y = c(0, 270), col = "red", lty = "dashed", lwd = 2) 
+
+
+# Obtain p-value
+if (coef(predict1.3)[2] >= mean(sim_coefs)) {
+    pred1_p <- 2*mean(sim_coefs >= coef(predict1.3)[2]) } else {
+    pred1_p <- 2*mean(sim_coefs <= coef(predict1.3)[2])
+}
+# Add p-value to histogram
 text(x = 0.4, y = 100, "p = 0.32")
 
 ################### VISUALIZING MALE VS. FEMALE STRENGTH #################
 ggplot(data = attr_observed, aes(y = strength, x = treatment, fill = sex)) + geom_boxplot() 
 
 ################# PREDICTION 2: ASSORTATIVITY OF INDIVIDUAL NETWORKS #####################
+# Creates the observed ibi matrices for aggregation networks
 ibi_matrices <- lapply(X = rep_list_groups, FUN = func_ibi)
+# Runs the permutation test (see function 7 in functions.R for more info)
 lapply(X = ibi_matrices, FUN = func_permute_assort)
 
 ##################### PREDICTION 3 GLM ##########################
