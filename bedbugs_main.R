@@ -76,8 +76,11 @@ lapply(X = ibi_matrices, FUN = func_permute_assort)
 ##################### PREDICTION 3 GLM ##########################
 predict3 <- glm(matings~prox_strength + thorax.mm + treatment, data=attr, family = Gamma(link="log"))
 plot(predict3) # residual vs fitted and scale location not flat
-# try loging strength and size
+# log strength and size
 predict3.2 <- glm(matings~prox_strength + log(attr$prox_strength) + thorax.mm + log(attr$thorax.mm) + treatment, data=attr, family = Gamma(link="log"))
 plot(predict3.2)  # better but not great ?
+# sqrt size and strength
+predict3.3 <- glm(matings~prox_strength + (attr$prox_strength^2) + thorax.mm + (attr$thorax.mm^2) + treatment, data=attr, family = Gamma(link="log"))
+plot(predict3.3)
 
 
