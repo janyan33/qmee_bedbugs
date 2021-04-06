@@ -36,7 +36,7 @@ lapply(X = igraph_objects, FUN = func_plot_network)
 
 
 ######################## PREDICTION 1 GLM ##########################
-predict1 <- glm(strength~sex + size + replicate, data=attr_observed, family = Gamma(link="log"))
+predict1 <- glm(strength~sex + size + treatment, data=attr_observed, family = Gamma(link="log"))
 plot(predict1) 
 
 ######################## PREDICTION 1 PERMUTATION ##########################
@@ -74,20 +74,10 @@ ibi_matrices <- lapply(X = rep_list_groups, FUN = func_ibi)
 lapply(X = ibi_matrices, FUN = func_permute_assort)
 
 ##################### PREDICTION 3 GLM ##########################
-social.low <- attr %>% group_by(treatment) %>% filter(treatment=="low") #low treatment data
-social.high <- attr %>% group_by(treatment) %>% filter(treatment=="high") #high treatment data
-
-predict3.low <- glm(matings~prox_strength + thorax.mm, data=social.low, family = Gamma(link="log"))
-plot(predict3.low) 
-# all good except residual vs fitted
-# log or quadratic prox_strength made it worse
-
-predict3.high <- glm(matings~prox_strength + thorax.mm, data=social.high, family = Gamma(link="log"))
-plot(predict3.high) 
-# plots are not good fit, try log
-social.high.log <- log(social.high$prox_strength)
-predict3.high2 <- glm(matings~prox_strength + social.high.log + thorax.mm, data=social.high, family = Gamma(link="log"))
-plot(predict3.high2 ) 
-# need everything log or just prox_strength?
+predict3 <- glm(matings~prox_strength + thorax.mm + treatment, data=attr, family = Gamma(link="log"))
+plot(predict3) # residual vs fitted and scale location not flat
+# try loging strength and size
+predict3.2 <- glm(matings~prox_strength + log(attr$prox_strength) + thorax.mm + log(attr$thorax.mm) + treatment, data=attr, family = Gamma(link="log"))
+plot(predict3.2)  # better but not great ?
 
 
