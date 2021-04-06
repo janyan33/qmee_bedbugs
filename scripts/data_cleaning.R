@@ -43,6 +43,9 @@ rep_list <- split(all_data, all_data$replicate)
 mount_matrices <- lapply(rep_list, func_mount_mat, "mount") # Creates list of mounting matrices
 mating_matrices <- lapply(rep_list, func_mount_mat, "mating") # Creates list of mating matrices
 
+mount_matrices[[1]] <- mount_matrices[[1]][-17, -17]
+mating_matrices[[1]] <- mating_matrices[[1]][-17, -17]
+
 saveRDS(mount_matrices, "mount_matrices.rds")
 saveRDS(mating_matrices, "mating_matrices.rds")
 

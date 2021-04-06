@@ -127,3 +127,22 @@ func_permute_assort <- function(ibi_matrix){
      abline(v = obs_assort_index, col = "red", lty = "dashed")
      return(list)
 }
+
+## FUNCTION 8: Calculate matings based on mating networks 
+func_matrix_to_igraph <- function(matrix){
+  igraph <- graph_from_adjacency_matrix(matrix, diag = FALSE, weighted = TRUE, mode = "directed")
+  igraph <- set_vertex_attr(igraph, "sex", 
+                            value = ifelse(V(igraph)$name %in% LETTERS[1:12], "Male", "Female"))
+  strength <- strength(igraph, mode = "in")
+  igraph <- set_vertex_attr(igraph, "matings", value = strength)
+  return(igraph)
+}
+
+
+
+
+
+
+
+
+

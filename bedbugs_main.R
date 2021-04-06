@@ -1,5 +1,5 @@
 ## setwd("C:/Users/jy33/OneDrive/Desktop/R/bedbugs")
-## par(mar=c(1,1,1,1)) # margins too large
+par(mar=c(1,1,1,1)) # margins too large
 library(tidyverse)
 library(asnipe)
 library(igraph)
@@ -21,6 +21,9 @@ attr <- read.csv("data/bbsna_attributes.csv") %>%
         filter(replicate == 1 | replicate == 2) %>% 
         filter(notes != "died")
 
+## Mating matrices 
+mating_matrices <- readRDS("mating_matrices.rds") # matrices created in data_cleaning.R
+mating_matrices <- list(mating_matrices[[1]], mating_matrices[[2]])
 
 ################# CREATING OBSERVED AGGREGATION NETWORKS ####################
 
@@ -51,18 +54,17 @@ for (i in 1:n_sim_1){
   sim_coefs[i] <- func_random_model(random_igraphs) 
 }
 # Plot histogram 
-sim_coefs <- c(sim_coefs, coef(predict1.3)[2])
+sim_coefs <- c(sim_coefs, coef(predict1)[2])
 hist(sim_coefs, main = "Prediction 1", xlab = "Coefficient value for sexMale")
-lines(x = c(coef(predict1.3)[2], coef(predict1.3)[2]), y = c(0, 270), col = "red", lty = "dashed", lwd = 2) 
-
+lines(x = c(coef(predict1)[2], coef(predict1)[2]), y = c(0, 270), col = "red", lty = "dashed", lwd = 2) 
 
 # Obtain p-value
-if (coef(predict1.3)[2] >= mean(sim_coefs)) {
-    pred1_p <- 2*mean(sim_coefs >= coef(predict1.3)[2]) } else {
-    pred1_p <- 2*mean(sim_coefs <= coef(predict1.3)[2])
+if (coef(predict1)[2] >= mean(sim_coefs)) {
+    pred1_p <- 2*mean(sim_coefs >= coef(predict1)[2]) } else {
+    pred1_p <- 2*mean(sim_coefs <= coef(predict1)[2])
 }
 # Add p-value to histogram
-text(x = 0.4, y = 100, "p = 0.32")
+text(x = 0.4, y = 100, "p = 0.35")
 
 ################### VISUALIZING MALE VS. FEMALE STRENGTH #################
 ggplot(data = attr_observed, aes(y = strength, x = treatment, fill = sex)) + geom_boxplot() 
@@ -72,6 +74,13 @@ ggplot(data = attr_observed, aes(y = strength, x = treatment, fill = sex)) + geo
 ibi_matrices <- lapply(X = rep_list_groups, FUN = func_ibi)
 # Runs the permutation test (see function 7 in functions.R for more info)
 lapply(X = ibi_matrices, FUN = func_permute_assort)
+
+################ PREDICTION 3: IS SOCIALITY POSITIVILY CORRELATED WITH HARASSMENT RECEIVED? #########
+igraphs_mating <- lapply(X = mating_matrices, FUN = func_matrix_to_igraph)
+mating_attr <- func_attr(igraphs_mating)
+attr_observed <- attr_observed %>% 
+                 left_join(mating_attr, by = c("name", "replicate", "size", "treatment", "sex"))
+
 
 ##################### PREDICTION 3 GLM ##########################
 predict3 <- glm(matings~prox_strength + thorax.mm + treatment, data=attr, family = Gamma(link="log"))
