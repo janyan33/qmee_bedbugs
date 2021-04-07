@@ -1,5 +1,5 @@
 ## setwd("C:/Users/jy33/OneDrive/Desktop/R/bedbugs")
-par(mar=c(1,1,1,1)) # margins too large
+## par(mar=c(1,1,1,1)) # margins too large
 library(tidyverse)
 library(asnipe)
 library(igraph)
@@ -51,7 +51,7 @@ for (i in 1:n_sim_1){
   # Creates new igraph objects where the nodes are shuffled
   random_igraphs <- lapply(rep_list_groups, func_permute_igraph)
   # Runs the glm on the new shuffled igraph objects; save coefs
-  sim_coefs[i] <- func_random_model(random_igraphs) 
+  sim_coefs[i] <- func_random_model_p1(random_igraphs) 
 }
 # Plot histogram 
 sim_coefs <- c(sim_coefs, coef(predict1)[2])
@@ -78,9 +78,35 @@ lapply(X = ibi_matrices, FUN = func_permute_assort)
 ################ PREDICTION 3: IS SOCIALITY POSITIVILY CORRELATED WITH HARASSMENT RECEIVED? #########
 igraphs_mating <- lapply(X = mating_matrices, FUN = func_matrix_to_igraph)
 mating_attr <- func_attr(igraphs_mating)
-attr_observed <- attr_observed %>% 
-                 left_join(mating_attr, by = c("name", "replicate", "size", "treatment", "sex"))
+attr_observed_p3 <- attr_observed %>%  # Adds # of matings to our main dataframe
+                 left_join(mating_attr, by = c("name", "replicate", "size", "treatment", "sex")) %>% 
+                 filter(sex == "Female")
+predict3.3 <- glm(matings~strength + (attr_observed_p3$strength^2) + size + 
+              (attr_observed_p3$size^2) + treatment, data=attr_observed_p3, family = Gamma(link="log"))
 
+################################ PERMUTATION PART #################################################
+n_sim_2 <- 999
+set.seed(33)
+sim_coefs <- numeric(n_sim_2)
+
+for (i in 1:n_sim_2){
+  # Creates new igraph objects where the nodes are shuffled
+  random_mating_igraphs <- lapply(mating_matrices, func_permute_igraph_females)
+  # Runs the glm on the new shuffled igraph objects; save coefs
+  sim_coefs[i] <- func_random_model_p3(random_mating_igraphs)
+}
+# Plot histogram 
+sim_coefs <- c(sim_coefs, coef(predict3.3)[2])
+hist(sim_coefs, main = "Prediction 3", xlab = "Coefficient value for sexStrength")
+lines(x = c(coef(predict3.3)[2], coef(predict3.3)[2]), y = c(0, 270), col = "red", lty = "dashed", lwd = 2) 
+
+# Obtain p-value
+if (coef(predict3.3)[2] >= mean(sim_coefs)) {
+  pred3_p <- 2*mean(sim_coefs >= coef(predict3.3)[2]) } else {
+    pred3_p <- 2*mean(sim_coefs <= coef(predict3.3)[2])
+  }
+# Add p-value to histogram
+text(x = 0.4, y = 100, "p = dunnoe yet")
 
 ##################### PREDICTION 3 GLM ##########################
 predict3 <- glm(matings~prox_strength + thorax.mm + treatment, data=attr, family = Gamma(link="log"))

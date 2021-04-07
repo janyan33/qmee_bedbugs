@@ -46,7 +46,7 @@ func_plot_network <- function(igraph_object){
   V(igraph_object)$color <- ifelse(V(igraph_object)$sex == "Female", "red", "blue")
   V(igraph_object)$size <- V(igraph_object)$strength*10
   V(igraph_object)$label.color <- "white"
-  E(igraph_object)$width <- E(igraph_object)$weight
+  E(igraph_object)$width <- E(igraph_object)$weight*6
   plot(igraph_object, edge.color = "dimgrey")
 }
 
@@ -75,7 +75,7 @@ func_permute_igraph <- function(rep_list_group) {
 # Steps: creates a dataframe combining the attributes from the different igraph objects
        # then runs the glm using this new dataframe 
 # Output: the coefficient from the glm for effect of sex on strength
-func_random_model <- function(random_igraphs){
+func_random_model_p1 <- function(random_igraphs){
   sim_attr <- data.frame()
   for (i in 1:length(random_igraphs)){
       attr_i <- attr %>% 
@@ -128,21 +128,56 @@ func_permute_assort <- function(ibi_matrix){
      return(list)
 }
 
-## FUNCTION 8: Calculate matings based on mating networks 
+## FUNCTION 8: Calculates # of matings (equivalent to in-strength of mating network)
+               # Also converts matrix to igraph object and plots the network bc why not 
+# Input: A mating matrix
+# Output: An igraph matrix with node attributes "matings" and "sex" assigned and the SNA graph
 func_matrix_to_igraph <- function(matrix){
   igraph <- graph_from_adjacency_matrix(matrix, diag = FALSE, weighted = TRUE, mode = "directed")
   igraph <- set_vertex_attr(igraph, "sex", 
                             value = ifelse(V(igraph)$name %in% LETTERS[1:12], "Male", "Female"))
   strength <- strength(igraph, mode = "in")
   igraph <- set_vertex_attr(igraph, "matings", value = strength)
+  V(igraph)$color <- ifelse(V(igraph)$sex == "Female", "red", "blue")
+  V(igraph)$label.color <- "white"
+  E(igraph)$width <- E(igraph)$weight
+  plot(igraph, edge.color = "dimgrey")
   return(igraph)
 }
 
+## FUNCTION 9: Creates igraph objects where only the female nodes are shuffled among themselves
+# Input: A matrix
+# Output: A randomized igraph object
+func_permute_igraph_females <- function(matrix) { 
+  #shuffle names 
+  names <- colnames(matrix)
+  m_names <- subset(names, names %in% LETTERS[1:12])
+  f_names <- sample(subset(names, names %in% LETTERS[13:24]))
+  new_names <- c(m_names, f_names)
+  colnames(matrix) <- new_names; rownames(matrix) <- new_names
+  
+  igraph <- graph_from_adjacency_matrix(matrix, diag = FALSE, weighted = TRUE, mode = "directed")
+  igraph <- set_vertex_attr(igraph, "sex", 
+                            value = ifelse(V(igraph)$name %in% LETTERS[1:12], "Male", "Female"))
+  strength <- strength(igraph, mode = "in")
+  igraph <- set_vertex_attr(igraph, "matings", value = strength)
+  return(igraph)
+}  
 
-
-
-
-
-
-
-
+func_random_model_p3 <- function(random_igraphs){
+  sim_attr <- data.frame()
+  for (i in 1:length(random_igraphs)){
+    attr_i <- attr_observed %>% 
+      filter(replicate == i) %>% 
+      select(c("name", "size", "replicate", "treatment", "strength"))
+    
+    new_attr <- as.data.frame(vertex_attr(random_igraphs[[i]])) %>% 
+                left_join(attr_i, by = "name")
+    new_attr <- new_attr %>% 
+                filter(sex == "Female")
+    sim_attr <- rbind(sim_attr, new_attr)
+  }
+  sim_model <- glm(matings~strength + (sim_attr$strength^2) + size + 
+               (sim_attr$size^2) + treatment, data=sim_attr, family = Gamma(link="log"))
+  return(coef(sim_model))[2]
+}
