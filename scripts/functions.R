@@ -164,6 +164,12 @@ func_permute_igraph_females <- function(matrix) {
   return(igraph)
 }  
 
+## FUNCTION 10: Assigns the rest of the node attributes to the randomized nodes using left_join; 
+                # runs the glm for Prediction 3
+# Input: a list of randomized igraph objects
+# Steps: creates a dataframe combining the attributes from the different igraph objects
+# then runs the glm using this new dataframe 
+# Output: the coefficient from the glm for the relationship between strength and matings
 func_random_model_p3 <- function(random_igraphs){
   sim_attr <- data.frame()
   for (i in 1:length(random_igraphs)){
@@ -179,5 +185,5 @@ func_random_model_p3 <- function(random_igraphs){
   }
   sim_model <- glm(matings~strength + (sim_attr$strength^2) + size + 
                (sim_attr$size^2) + treatment, data=sim_attr, family = Gamma(link="log"))
-  return(coef(sim_model))[2]
+  return(coef(sim_model)[2])
 }
