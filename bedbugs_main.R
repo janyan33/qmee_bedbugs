@@ -82,14 +82,18 @@ mating_attr <- func_attr(igraphs_mating)
 attr_observed_p3 <- attr_observed %>%  # Adds # of matings to our main dataframe
                  left_join(mating_attr, by = c("name", "replicate", "size", "treatment", "sex")) %>% 
                  filter(sex == "Female")
-predict3.3 <- glm(matings~strength + (attr_observed_p3$strength^2) + size + 
-              (attr_observed_p3$size^2) + treatment, data=attr_observed_p3, family = Gamma(link="log"))
-plot(predict3.3)
-# I dont think squaring it was proper ?
+
 predict3.1 <- glm(matings~strength + size + treatment, data=attr_observed_p3, family = Gamma(link="log"))
-plot(predict3.1)
+plot(predict3.1) # original
 predict3.2 <- glm(matings~strength + log(attr_observed_p3$strength)+ size +log(attr_observed_p3$size)+ treatment, data=attr_observed_p3, family = Gamma(link="log"))
-plot(predict3.2)
+plot(predict3.2) # log size and strength
+predict3.3 <- glm(matings~strength + (attr_observed_p3$strength^2) + size + 
+                    (attr_observed_p3$size^2) + treatment, data=attr_observed_p3, family = Gamma(link="log"))
+plot(predict3.3) # squaring size and strength
+# check distibutions of variables
+hist(attr_observed_p3$strength)
+hist(attr_observed_p3$size)
+hist(attr_observed_p3$matings)
 
 ##################### PREDICTION 3 PERMUTATION #############################################
 n_sim_2 <- 999
