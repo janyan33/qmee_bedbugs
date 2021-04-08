@@ -84,6 +84,12 @@ attr_observed_p3 <- attr_observed %>%  # Adds # of matings to our main dataframe
                  filter(sex == "Female")
 predict3.3 <- glm(matings~strength + (attr_observed_p3$strength^2) + size + 
               (attr_observed_p3$size^2) + treatment, data=attr_observed_p3, family = Gamma(link="log"))
+plot(predict3.3)
+# I dont think squaring it was proper ?
+predict3.1 <- glm(matings~strength + size + treatment, data=attr_observed_p3, family = Gamma(link="log"))
+plot(predict3.1)
+predict3.2 <- glm(matings~strength + log(attr_observed_p3$strength)+ size +log(attr_observed_p3$size)+ treatment, data=attr_observed_p3, family = Gamma(link="log"))
+plot(predict3.2)
 
 ##################### PREDICTION 3 PERMUTATION #############################################
 n_sim_2 <- 999
