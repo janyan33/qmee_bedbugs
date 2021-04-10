@@ -44,7 +44,7 @@ predict1 <- glm(strength~sex + size + treatment, data=attr_observed, family = Ga
 plot(predict1) 
 
 ######################## PREDICTION 1 PERMUTATION ##########################
-n_sim_1 <- 99
+n_sim_1 <- 999
 set.seed(33)
 sim_coefs_1 <- numeric(n_sim_1)
 
@@ -98,14 +98,14 @@ for (i in 1:n_sim_2){
   sim_coefs_3[i] <- func_random_model_p3(random_mating_igraphs)
 }
 # Plot histogram 
-sim_coefs_3 <- c(sim_coefs_3, coef(predict3.3)[2])
+sim_coefs_3 <- c(sim_coefs_3, coef(predict3)[2])
 hist(sim_coefs_3, main = "Prediction 3", xlab = "Coefficient value for strength")
-lines(x = c(coef(predict3.3)[2], coef(predict3.3)[2]), y = c(0, 200), col = "red", lty = "dashed", lwd = 2) 
+lines(x = c(coef(predict3)[2], coef(predict3)[2]), y = c(0, 200), col = "red", lty = "dashed", lwd = 2) 
 
 # Obtain p-value
-if (coef(predict3.3)[2] >= mean(sim_coefs_3)) {
-  pred3_p <- 2*mean(sim_coefs_3 >= coef(predict3.3)[2]) } else {
-    pred3_p <- 2*mean(sim_coefs_3 <= coef(predict3.3)[2])
+if (coef(predict3)[2] >= mean(sim_coefs_3)) {
+  pred3_p <- 2*mean(sim_coefs_3 >= coef(predict3)[2]) } else {
+    pred3_p <- 2*mean(sim_coefs_3 <= coef(predict3)[2])
   }
 # Add p-value to histogram
 text(x = 0.3, y = 100, "p = 0.62")
