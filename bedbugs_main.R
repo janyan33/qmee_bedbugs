@@ -99,8 +99,9 @@ for (i in 1:n_sim_2){
 }
 # Plot histogram 
 sim_coefs_3 <- c(sim_coefs_3, coef(predict3)[2])
-hist(sim_coefs_3, main = "Prediction 3", xlab = "Coefficient value for strength")
-lines(x = c(coef(predict3)[2], coef(predict3)[2]), y = c(0, 200), col = "red", lty = "dashed", lwd = 2) 
+hist(sim_coefs_3, main = "Prediction 3", xlab = "Coefficient value for strength", 
+     ylim = c(0, 200))
+lines(x = c(coef(predict3)[2], coef(predict3)[2]), y = c(0, 220), col = "red", lty = "dashed", lwd = 2) 
 
 # Obtain p-value
 if (coef(predict3)[2] >= mean(sim_coefs_3)) {
@@ -108,7 +109,7 @@ if (coef(predict3)[2] >= mean(sim_coefs_3)) {
     pred3_p <- 2*mean(sim_coefs_3 <= coef(predict3)[2])
   }
 # Add p-value to histogram
-text(x = 0.3, y = 100, "p = 0.62")
+text(x = 0.3, y = 100, "p = 0.57")
 
 ##################### PREDICTION 3 GLM ##########################
 # predict3 <- glm(matings~prox_strength + thorax.mm + treatment, data=attr, family = Gamma(link="log"))
