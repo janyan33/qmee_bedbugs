@@ -68,7 +68,9 @@ if (coef(predict1)[2] >= mean(sim_coefs_1)) {
 text(x = 0.4, y = 100, "p = 0.35")
 
 ################### VISUALIZING MALE VS. FEMALE STRENGTH #################
-ggplot(data = attr_observed, aes(y = strength, x = treatment, fill = sex)) + geom_boxplot() 
+ggplot(data = attr_observed, aes(y = strength, x = sex, fill = sex)) + geom_boxplot() + 
+       theme(text = element_text(size = 20)) + geom_jitter(position=position_jitter(width=.1, height=0)) + 
+       scale_fill_manual(values=c("#f0553a", "#4A75D2"))
 
 ################# PREDICTION 2: ASSORTATIVITY OF INDIVIDUAL NETWORKS #####################
 # Creates the observed ibi matrices for aggregation networks
