@@ -113,6 +113,14 @@ if (coef(predict3)[2] >= mean(sim_coefs_3)) {
 # Add p-value to histogram
 text(x = 0.3, y = 100, "p = 0.57")
 
+################### VISUALIZING MATINGS ~ STRENGTH #################
+ggplot(data = attr_observed_p3, aes(y = matings, x = strength, col = treatment)) + geom_smooth(method = "lm", se = FALSE) + 
+  theme(text = element_text(size = 20)) + geom_point() + facet_grid(rows = vars(treatment)) + 
+  scale_color_manual(values = c("navyblue", "darkorange"))
+
+
+
+
 ##################### PREDICTION 3 GLM ##########################
 # predict3 <- glm(matings~prox_strength + thorax.mm + treatment, data=attr, family = Gamma(link="log"))
 # plot(predict3) # residual vs fitted and scale location not flat
