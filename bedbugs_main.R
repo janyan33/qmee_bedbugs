@@ -13,18 +13,18 @@ source("scripts/functions.R")
 ###################### INPUTTING AND ORGANIZING DATA ########################
 ## Data for aggregation-based networks
 groups <- read.csv("data/bbsna_aggregations.csv") %>% 
-          filter(Replicate != "prelim")
+          filter(Network != "N/A")
 
-rep_list_groups <- split(groups, groups$Replicate) # creates a list of replicates
+rep_list_groups <- split(groups, groups$Network) # creates a list of replicates
 
 ## Attribute data
 attr <- read.csv("data/bbsna_attributes.csv") %>% 
-        filter(replicate == 1 | replicate == 2) %>% 
+        filter(network != "N/A") %>% 
         filter(notes != "died")
 
 ## Mating matrices 
 mating_matrices <- readRDS("mating_matrices.rds") # matrices created in data_cleaning.R
-mating_matrices <- list(mating_matrices[[1]], mating_matrices[[2]])
+#mating_matrices <- list(mating_matrices[[1]], mating_matrices[[2]])
 
 ################# CREATING OBSERVED AGGREGATION NETWORKS ####################
 
@@ -37,7 +37,6 @@ print(attr_observed)
 
 ## Visualizing the observed networks
 lapply(X = igraph_objects, FUN = func_plot_network)
-
 
 ######################## PREDICTION 1 GLM ##########################
 predict1 <- glm(strength~sex + size + treatment, data=attr_observed, family = Gamma(link="log"))
@@ -82,7 +81,7 @@ lapply(X = ibi_matrices, FUN = func_permute_assort)
 igraphs_mating <- lapply(X = mating_matrices, FUN = func_matrix_to_igraph)
 mating_attr <- func_attr(igraphs_mating)
 attr_observed_p3 <- attr_observed %>%  # Adds # of matings to our main dataframe
-                 left_join(mating_attr, by = c("name", "replicate", "size", "treatment", "sex")) %>% 
+                 left_join(mating_attr, by = c("name", "network", "size", "treatment", "sex")) %>% 
                  filter(sex == "Female")
 
 predict3 <- glm(matings~strength + size + treatment, data=attr_observed_p3, family = Gamma(link="log"))
