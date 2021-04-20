@@ -13,18 +13,18 @@ source("scripts/functions.R")
 ###################### INPUTTING AND ORGANIZING DATA ########################
 ## Data for aggregation-based networks
 groups <- read.csv("data/bbsna_aggregations.csv") %>% 
-          filter(Replicate != "prelim")
+          filter(Network != "N/A")
 
-rep_list_groups <- split(groups, groups$Replicate) # creates a list of replicates
+rep_list_groups <- split(groups, groups$Network) # creates a list of replicates
 
 ## Attribute data
 attr <- read.csv("data/bbsna_attributes.csv") %>% 
-        filter(replicate == 1 | replicate == 2) %>% 
+        filter(network != "N/A") %>% 
         filter(notes != "died")
 
 ## Mating matrices 
 mating_matrices <- readRDS("mating_matrices.rds") # matrices created in data_cleaning.R
-mating_matrices <- list(mating_matrices[[1]], mating_matrices[[2]])
+#mating_matrices <- list(mating_matrices[[1]], mating_matrices[[2]])
 
 ################# CREATING OBSERVED AGGREGATION NETWORKS ####################
 
@@ -38,13 +38,12 @@ print(attr_observed)
 ## Visualizing the observed networks
 lapply(X = igraph_objects, FUN = func_plot_network)
 
-
 ######################## PREDICTION 1 GLM ##########################
 predict1 <- glm(strength~sex + size + treatment, data=attr_observed, family = Gamma(link="log"))
 plot(predict1) 
 
 ######################## PREDICTION 1 PERMUTATION ##########################
-n_sim_1 <- 99
+n_sim_1 <- 999
 set.seed(33)
 sim_coefs_1 <- numeric(n_sim_1)
 
@@ -68,7 +67,9 @@ if (coef(predict1)[2] >= mean(sim_coefs_1)) {
 text(x = 0.4, y = 100, "p = 0.35")
 
 ################### VISUALIZING MALE VS. FEMALE STRENGTH #################
-ggplot(data = attr_observed, aes(y = strength, x = treatment, fill = sex)) + geom_boxplot() 
+ggplot(data = attr_observed, aes(y = strength, x = sex, fill = sex)) + geom_boxplot() + 
+       theme(text = element_text(size = 20)) + geom_jitter(position=position_jitter(width=.1, height=0)) + 
+       scale_fill_manual(values=c("#f0553a", "#4A75D2"))
 
 ################# PREDICTION 2: ASSORTATIVITY OF INDIVIDUAL NETWORKS #####################
 # Creates the observed ibi matrices for aggregation networks
@@ -80,7 +81,7 @@ lapply(X = ibi_matrices, FUN = func_permute_assort)
 igraphs_mating <- lapply(X = mating_matrices, FUN = func_matrix_to_igraph)
 mating_attr <- func_attr(igraphs_mating)
 attr_observed_p3 <- attr_observed %>%  # Adds # of matings to our main dataframe
-                 left_join(mating_attr, by = c("name", "replicate", "size", "treatment", "sex")) %>% 
+                 left_join(mating_attr, by = c("name", "network", "size", "treatment", "sex")) %>% 
                  filter(sex == "Female")
 
 predict3 <- glm(matings~strength + size + treatment, data=attr_observed_p3, family = Gamma(link="log"))
@@ -98,17 +99,26 @@ for (i in 1:n_sim_2){
   sim_coefs_3[i] <- func_random_model_p3(random_mating_igraphs)
 }
 # Plot histogram 
-sim_coefs_3 <- c(sim_coefs_3, coef(predict3.3)[2])
-hist(sim_coefs_3, main = "Prediction 3", xlab = "Coefficient value for strength")
-lines(x = c(coef(predict3.3)[2], coef(predict3.3)[2]), y = c(0, 200), col = "red", lty = "dashed", lwd = 2) 
+sim_coefs_3 <- c(sim_coefs_3, coef(predict3)[2])
+hist(sim_coefs_3, main = "Prediction 3", xlab = "Coefficient value for strength", 
+     ylim = c(0, 200))
+lines(x = c(coef(predict3)[2], coef(predict3)[2]), y = c(0, 220), col = "red", lty = "dashed", lwd = 2) 
 
 # Obtain p-value
-if (coef(predict3.3)[2] >= mean(sim_coefs_3)) {
-  pred3_p <- 2*mean(sim_coefs_3 >= coef(predict3.3)[2]) } else {
-    pred3_p <- 2*mean(sim_coefs_3 <= coef(predict3.3)[2])
+if (coef(predict3)[2] >= mean(sim_coefs_3)) {
+  pred3_p <- 2*mean(sim_coefs_3 >= coef(predict3)[2]) } else {
+    pred3_p <- 2*mean(sim_coefs_3 <= coef(predict3)[2])
   }
 # Add p-value to histogram
-text(x = 0.3, y = 100, "p = 0.62")
+text(x = 0.3, y = 100, "p = 0.57")
+
+################### VISUALIZING MATINGS ~ STRENGTH #################
+ggplot(data = attr_observed_p3, aes(y = matings, x = strength, col = treatment)) + geom_smooth(method = "lm", se = FALSE) + 
+  theme(text = element_text(size = 20)) + geom_point() + facet_grid(rows = vars(treatment)) + 
+  scale_color_manual(values = c("navyblue", "darkorange"))
+
+
+
 
 ##################### PREDICTION 3 GLM ##########################
 # predict3 <- glm(matings~prox_strength + thorax.mm + treatment, data=attr, family = Gamma(link="log"))

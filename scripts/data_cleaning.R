@@ -39,7 +39,7 @@ return(as.matrix(mount_matrix))
 }
 
 ## Applying function to all replicates and storing matrices as a list object
-rep_list <- split(all_data, all_data$replicate)
+rep_list <- split(all_data, all_data$network)
 mount_matrices <- lapply(rep_list, func_mount_mat, "mount") # Creates list of mounting matrices
 mating_matrices <- lapply(rep_list, func_mount_mat, "mating") # Creates list of mating matrices
 

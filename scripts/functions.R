@@ -30,10 +30,10 @@ func_ibi <- function(rep_groups){
 func_attr <- function(igraph_objects){
   new_attr <- data.frame()
   for (i in 1:length(igraph_objects)){
-    attr_i <- subset(attr, replicate == i & notes != "died")
+    attr_i <- subset(attr, network == i & notes != "died")
     igraph_objects[[i]] <- set_vertex_attr(igraph_objects[[i]], "size", value = attr_i$thorax.mm)
     igraph_objects[[i]] <- set_vertex_attr(igraph_objects[[i]], "treatment", value = attr_i$treatment)
-    igraph_objects[[i]] <- set_vertex_attr(igraph_objects[[i]], "replicate", value = attr_i$replicate)
+    igraph_objects[[i]] <- set_vertex_attr(igraph_objects[[i]], "network", value = attr_i$network)
     new_attr <- rbind(new_attr, vertex_attr(igraph_objects[[i]]))
   }
   return(new_attr)
@@ -79,15 +79,15 @@ func_random_model_p1 <- function(random_igraphs){
   sim_attr <- data.frame()
   for (i in 1:length(random_igraphs)){
       attr_i <- attr %>% 
-      filter(replicate == i) %>% 
+      filter(network == i) %>% 
       rename("name" = "ID") %>% 
-      select(c("name", "thorax.mm", "replicate", "treatment"))
+      select(c("name", "thorax.mm", "network", "treatment"))
       
       new_attr <- as.data.frame(vertex_attr(random_igraphs[[i]])) %>% 
                   left_join(attr_i, by = "name")
       sim_attr <- rbind(sim_attr, new_attr)
   }
-  sim_model <- glm(strength ~ sex + thorax.mm + (thorax.mm)^2 + replicate, data=sim_attr, family = Gamma(link="log"))
+  sim_model <- glm(strength ~ sex + thorax.mm + (thorax.mm)^2 + network, data=sim_attr, family = Gamma(link="log"))
   return(coef(sim_model)[2])
 }
 
@@ -123,8 +123,8 @@ func_permute_assort <- function(ibi_matrix){
      }
      sim_assort_index <- c(sim_assort_index, obs_assort_index)
      list <- list("p-value" = p, "observed assortativity score" = obs_assort_index)
-     hist(sim_assort_index, breaks = 25)
-     abline(v = obs_assort_index, col = "red", lty = "dashed")
+     hist(sim_assort_index, breaks = 25, xlim = c(-0.3, 0.3), ylim = c(0, 150))
+     lines(x = c(obs_assort_index, obs_assort_index), y = c(0, 150), col = "red", lty = "dashed", lwd = 2)
      return(list)
 }
 
@@ -133,10 +133,10 @@ func_permute_assort <- function(ibi_matrix){
 # Input: A mating matrix
 # Output: An igraph matrix with node attributes "matings" and "sex" assigned and the SNA graph
 func_matrix_to_igraph <- function(matrix){
-  igraph <- graph_from_adjacency_matrix(matrix, diag = FALSE, weighted = TRUE, mode = "directed")
+  igraph <- graph_from_adjacency_matrix(matrix, diag = FALSE, weighted = TRUE, mode = "undirected")
   igraph <- set_vertex_attr(igraph, "sex", 
                             value = ifelse(V(igraph)$name %in% LETTERS[1:12], "Male", "Female"))
-  strength <- strength(igraph, mode = "in")
+  strength <- strength(igraph, mode = "all")
   igraph <- set_vertex_attr(igraph, "matings", value = strength)
   V(igraph)$color <- ifelse(V(igraph)$sex == "Female", "red", "blue")
   V(igraph)$label.color <- "white"
@@ -174,8 +174,8 @@ func_random_model_p3 <- function(random_igraphs){
   sim_attr <- data.frame()
   for (i in 1:length(random_igraphs)){
     attr_i <- attr_observed %>% 
-      filter(replicate == i) %>% 
-      select(c("name", "size", "replicate", "treatment", "strength"))
+      filter(network == i) %>% 
+      select(c("name", "size", "network", "treatment", "strength"))
     
     new_attr <- as.data.frame(vertex_attr(random_igraphs[[i]])) %>% 
                 left_join(attr_i, by = "name")
