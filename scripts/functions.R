@@ -34,6 +34,7 @@ func_attr <- function(igraph_objects){
     igraph_objects[[i]] <- set_vertex_attr(igraph_objects[[i]], "size", value = attr_i$thorax.mm)
     igraph_objects[[i]] <- set_vertex_attr(igraph_objects[[i]], "treatment", value = attr_i$treatment)
     igraph_objects[[i]] <- set_vertex_attr(igraph_objects[[i]], "network", value = attr_i$network)
+    igraph_objects[[i]] <- set_vertex_attr(igraph_objects[[i]], "block", value = attr_i$block)
     new_attr <- rbind(new_attr, vertex_attr(igraph_objects[[i]]))
   }
   return(new_attr)
