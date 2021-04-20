@@ -119,7 +119,6 @@ ggplot(data = attr_observed_p3, aes(y = matings, x = strength, col = treatment))
 
 
 
-
 ##################### PREDICTION 3 GLM ##########################
 # predict3 <- glm(matings~prox_strength + thorax.mm + treatment, data=attr, family = Gamma(link="log"))
 # plot(predict3) # residual vs fitted and scale location not flat
