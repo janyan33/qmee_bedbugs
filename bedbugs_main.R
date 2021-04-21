@@ -39,7 +39,7 @@ print(attr_observed)
 lapply(X = igraph_objects, FUN = func_plot_network)
 
 ######################## PREDICTION 1 GLM ##########################
-predict1 <- glm(strength~sex + size + treatment, data=attr_observed, family = Gamma(link="log"))
+predict1 <- glm(strength~sex + size + treatment + network + block, data=attr_observed, family = Gamma(link="log"))
 plot(predict1) 
 
 ######################## PREDICTION 1 PERMUTATION ##########################
@@ -84,7 +84,7 @@ attr_observed_p3 <- attr_observed %>%  # Adds # of matings to our main dataframe
                  left_join(mating_attr, by = c("name", "network", "size", "treatment", "sex")) %>% 
                  filter(sex == "Female")
 
-predict3 <- glm(matings~strength + size + treatment, data=attr_observed_p3, family = Gamma(link="log"))
+predict3 <- glm(matings~strength + size + network + treatment + block.x, data=attr_observed_p3, family = Gamma(link="log"))
 plot(predict3) 
 
 ##################### PREDICTION 3 PERMUTATION #############################################
@@ -117,16 +117,12 @@ ggplot(data = attr_observed_p3, aes(y = matings, x = strength, col = treatment))
   theme(text = element_text(size = 20)) + geom_point() + facet_grid(rows = vars(treatment)) + 
   scale_color_manual(values = c("navyblue", "darkorange"))
 
+##################### PREDICTION 4 GLM ##########################
+
+predict4.p1 <- glm(strength~sex*treatment + size + network + block, data=attr_observed, family = Gamma(link="log"))
+plot(predict4.p1)
 
 
-##################### PREDICTION 3 GLM ##########################
-# predict3 <- glm(matings~prox_strength + thorax.mm + treatment, data=attr, family = Gamma(link="log"))
-# plot(predict3) # residual vs fitted and scale location not flat
-# log strength and size
-# predict3.2 <- glm(matings~prox_strength + log(attr$prox_strength) + thorax.mm + log(attr$thorax.mm) + treatment, data=attr, family = Gamma(link="log"))
-# plot(predict3.2)  # better but not great ?
-# sqrt size and strength
-# predict3.3 <- glm(matings~prox_strength + (attr$prox_strength^2) + thorax.mm + (attr$thorax.mm^2) + treatment, data=attr, family = Gamma(link="log"))
-# lot(predict3.3)
-
+predict4.p3 <- glm(matings~strength*treatment + size + network + block.x, data=attr_observed_p3, family = Gamma(link="log"))
+plot(predict4.p3)
 
