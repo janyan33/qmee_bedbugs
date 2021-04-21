@@ -82,13 +82,13 @@ func_random_model_p1 <- function(random_igraphs){
       attr_i <- attr %>% 
       filter(network == i) %>% 
       rename("name" = "ID") %>% 
-      select(c("name", "thorax.mm", "network", "treatment"))
+      select(c("name", "thorax.mm", "network", "treatment", "block"))
       
       new_attr <- as.data.frame(vertex_attr(random_igraphs[[i]])) %>% 
                   left_join(attr_i, by = "name")
       sim_attr <- rbind(sim_attr, new_attr)
   }
-  sim_model <- glm(strength ~ sex + thorax.mm + (thorax.mm)^2 + network, data=sim_attr, family = Gamma(link="log"))
+  sim_model <- glm(strength ~ sex + thorax.mm + treatment + network + block, data= sim_attr, family = Gamma(link="log"))
   return(coef(sim_model)[2])
 }
 
