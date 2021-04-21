@@ -141,8 +141,9 @@ func_matrix_to_igraph <- function(matrix){
   igraph <- set_vertex_attr(igraph, "matings", value = strength)
   V(igraph)$color <- ifelse(V(igraph)$sex == "Female", "red", "blue")
   V(igraph)$label.color <- "white"
-  E(igraph)$width <- E(igraph)$weight
-  plot(igraph, edge.color = "dimgrey")
+  V(igraph)$size <- V(igraph)$matings*3.5
+  E(igraph)$width <- E(igraph)$weight*1.5
+  plot(igraph, edge.color = "dimgrey", layout = layout_nicely(igraph))
   return(igraph)
 }
 
