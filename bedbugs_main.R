@@ -55,7 +55,7 @@ for (i in 1:n_sim_1){
 }
 # Plot histogram 
 sim_coefs_1 <- c(sim_coefs_1, coef(predict1)[2])
-hist(sim_coefs_1, main = "Prediction 1", xlab = "Coefficient value for sexMale")
+hist(sim_coefs_1, main = "Prediction 1", xlab = "Coefficient value for sexMale", col = "azure2")
 lines(x = c(coef(predict1)[2], coef(predict1)[2]), y = c(0, 270), col = "red", lty = "dashed", lwd = 2) 
 
 # Obtain p-value
@@ -64,7 +64,7 @@ if (coef(predict1)[2] >= mean(sim_coefs_1)) {
     pred1_p <- 2*mean(sim_coefs_1 <= coef(predict1)[2])
 }
 # Add p-value to histogram
-text(x = 0.4, y = 100, "p = 0.35")
+text(x = 0.25, y = 100, "p = 0.05")
 
 ################### VISUALIZING MALE VS. FEMALE STRENGTH #################
 ggplot(data = attr_observed, aes(y = strength, x = sex, fill = sex)) + geom_boxplot() + 
@@ -81,10 +81,10 @@ lapply(X = ibi_matrices, FUN = func_permute_assort)
 igraphs_mating <- lapply(X = mating_matrices, FUN = func_matrix_to_igraph)
 mating_attr <- func_attr(igraphs_mating)
 attr_observed_p3 <- attr_observed %>%  # Adds # of matings to our main dataframe
-                 left_join(mating_attr, by = c("name", "network", "size", "treatment", "sex")) %>% 
+                 left_join(mating_attr, by = c("name", "network", "size", "treatment", "sex", "block")) %>% 
                  filter(sex == "Female")
 
-predict3 <- glm(matings~strength + size + network + treatment + block.x, data=attr_observed_p3, family = Gamma(link="log"))
+predict3 <- glm(matings~strength + size + network + treatment + block, data=attr_observed_p3, family = Gamma(link="log"))
 plot(predict3) 
 
 ##################### PREDICTION 3 PERMUTATION #############################################
@@ -101,7 +101,7 @@ for (i in 1:n_sim_2){
 # Plot histogram 
 sim_coefs_3 <- c(sim_coefs_3, coef(predict3)[2])
 hist(sim_coefs_3, main = "Prediction 3", xlab = "Coefficient value for strength", 
-     ylim = c(0, 200))
+     ylim = c(0, 150), breaks = 25, col = "azure2")
 lines(x = c(coef(predict3)[2], coef(predict3)[2]), y = c(0, 220), col = "red", lty = "dashed", lwd = 2) 
 
 # Obtain p-value
@@ -110,7 +110,7 @@ if (coef(predict3)[2] >= mean(sim_coefs_3)) {
     pred3_p <- 2*mean(sim_coefs_3 <= coef(predict3)[2])
   }
 # Add p-value to histogram
-text(x = 0.3, y = 100, "p = 0.57")
+text(x = 0.15, y = 100, "p = 0.87")
 
 ################### VISUALIZING MATINGS ~ STRENGTH #################
 ggplot(data = attr_observed_p3, aes(y = matings, x = strength, col = treatment)) + geom_smooth(method = "lm", se = FALSE) + 

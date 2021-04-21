@@ -124,7 +124,8 @@ func_permute_assort <- function(ibi_matrix){
      }
      sim_assort_index <- c(sim_assort_index, obs_assort_index)
      list <- list("p-value" = p, "observed assortativity score" = obs_assort_index)
-     hist(sim_assort_index, breaks = 25, xlim = c(-0.3, 0.3), ylim = c(0, 150))
+     hist(sim_assort_index, breaks = 25, xlim = c(min(sim_assort_index), max(sim_assort_index)), 
+          ylim = c(0, 180), col = "azure2")
      lines(x = c(obs_assort_index, obs_assort_index), y = c(0, 150), col = "red", lty = "dashed", lwd = 2)
      return(list)
 }
@@ -177,7 +178,7 @@ func_random_model_p3 <- function(random_igraphs){
   for (i in 1:length(random_igraphs)){
     attr_i <- attr_observed %>% 
       filter(network == i) %>% 
-      select(c("name", "size", "network", "treatment", "strength"))
+      select(c("name", "size", "network", "treatment", "strength", "block"))
     
     new_attr <- as.data.frame(vertex_attr(random_igraphs[[i]])) %>% 
                 left_join(attr_i, by = "name")
@@ -185,7 +186,7 @@ func_random_model_p3 <- function(random_igraphs){
                 filter(sex == "Female")
     sim_attr <- rbind(sim_attr, new_attr)
   }
-  sim_model <- glm(matings~strength + (sim_attr$strength^2) + size + 
-               (sim_attr$size^2) + treatment, data=sim_attr, family = Gamma(link="log"))
+  sim_model <- glm(matings ~ strength + size + network + treatment +
+                   block, data = sim_attr, family = Gamma(link="log"))
   return(coef(sim_model)[2])
 }
