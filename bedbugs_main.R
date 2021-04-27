@@ -123,6 +123,6 @@ predict4.p1 <- glm(strength~sex*treatment + size + network + block, data=attr_ob
 plot(predict4.p1)
 
 
-predict4.p3 <- glm(matings~strength*treatment + size + network + block.x, data=attr_observed_p3, family = Gamma(link="log"))
+predict4.p3 <- glm(matings~strength*treatment + size + network + block, data=attr_observed_p3, family = Gamma(link="log"))
 plot(predict4.p3)
 
