@@ -1,0 +1,14 @@
+Nicely explained, in general.
+
+It would be good to be more clear about who did what. The stuff about building the arena then the project group responsible for this submission.
+
+I think it would be good to report in more detail your thinking about the mating versus mounting issue. It's not always necessary to make the science look cleaner than it really was.
+
+3 is probably still not enough blocks to make block into a random effect. Keeping block affect fixed, and being cautious about your scientific conclusions should not be seen as a major problem here.
+
+It's not completely clear why you tested prediction one using a grand statistic, but tested prediction two separately on each of the networks. I'm wondering if combining them would give you enough power to see that there's a week positive assortativity. I'm also pretty curious about the issue you identified about the naive by naive measurement of assortativity being biased two negative by the fact that we don't look at an individual's association with them self. There must be published approaches for dealing with this.
+
+Comparing different networks with a permutation test (your last question) seems hard. The ideal way to do it would be switch labeling on the whole network. This would be practical only if you had ~10 replicates.
+
+A naive but sensible way to get confidence intervals is to simply subtract all of the permutation estimates from the real estimate to get a 95% CI on how much "extra" there is of whatever correlation or effect you are looking for.
+
